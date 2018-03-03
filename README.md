@@ -1,2 +1,2 @@
 # alankay.net
-Personal website
+This is my personal website - nothing special.
