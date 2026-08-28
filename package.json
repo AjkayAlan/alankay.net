@@ -8,12 +8,27 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:md",
+    "lint:js": "eslint .",
+    "lint:css": "stylelint \"src/**/*.css\" \"src/**/*.astro\"",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"!node_modules/**\"",
+    "format:check": "npm run lint"
   },
   "dependencies": {
-    "@fontsource/ibm-plex-mono": "^5.1.1",
-    "@fontsource/inter": "^5.1.1",
-    "@fontsource/space-grotesk": "^5.1.1",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
     "astro": "^7.2.9"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.1",
+    "eslint-plugin-astro": "^3.1.0",
+    "markdownlint-cli2": "^0.23.2",
+    "postcss-html": "^2.0.0",
+    "stylelint": "^17.14.1",
+    "stylelint-config-standard": "^40.0.0",
+    "typescript-eslint": "^8.68.0"
   }
 }
