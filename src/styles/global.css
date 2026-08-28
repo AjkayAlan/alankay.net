@@ -42,6 +42,10 @@
   --nav-height: 4rem;
   --radius: 12px;
 
+  /* Vertical rhythm */
+  --space-section: clamp(2.5rem, 6vw, 4.5rem);
+  --space-tight: clamp(1.25rem, 2.5vw, 2rem);
+
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 160ms;
@@ -131,13 +135,13 @@ button {
 }
 
 .section {
-  padding-block: clamp(3rem, 7vw, 5.5rem);
+  padding-block: var(--space-section);
 }
 
-/* The About section opens right after the hero's EQ strip; pull its top edge
-   up so the gap to "About me" is tight rather than a double stack of padding. */
+/* The About section opens right after the hero's EQ strip; use the tight
+   spacing so the gap to "About me" reads as a lead-in, not a full break. */
 #about {
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-top: var(--space-tight);
 }
 
 .eyebrow {
@@ -232,7 +236,7 @@ button {
 .hero {
   position: relative;
   overflow: hidden;
-  padding-block: clamp(2rem, 5vh, 3.5rem) clamp(1.5rem, 4vh, 2.5rem);
+  padding-block: clamp(2rem, 5vh, 3.5rem) var(--space-tight);
 }
 
 .hero__grid {
@@ -628,7 +632,7 @@ button {
 /* ---------- Footer ---------- */
 .site-footer {
   border-top: 1px solid var(--line);
-  padding-block: 2rem;
+  padding-block: var(--space-tight);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--text-muted);
