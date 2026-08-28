@@ -12,11 +12,6 @@ const bases = influences.map((t) => ({
 ---
 
 <nav class="dna" aria-label="Influences">
-  <div class="dna__header">
-    <span class="dna__title">Four bases, one genome</span>
-    <span class="dna__title">H · B · C · P</span>
-  </div>
-
   <div class="dna__canvas-wrap">
     <canvas
       class="dna__canvas"
@@ -56,6 +51,8 @@ const bases = influences.map((t) => ({
 
     let baseColors = [];
     let backboneColor = '#53616f';
+    let hoveredBaseIdx = -1; // base being hovered (for highlight)
+    let clickTargets = []; // screen-space hit regions, rebuilt each frame
 
     const clamp = function (n, lo, hi) {
       return Math.min(hi, Math.max(lo, n));
@@ -97,6 +94,8 @@ const bases = influences.map((t) => ({
       if (canvas.height !== ph) canvas.height = ph;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
+
+      clickTargets = [];
 
       const cx = w / 2;
       const R = Math.min(w, h) * 0.17;
@@ -153,11 +152,14 @@ const bases = influences.map((t) => ({
 
       for (let i = 0; i < RUNGS; i++) {
         const P = pts[i];
+        const baseIdx = i % bases.length;
         items.push({
           kind: 'rung',
           z: P.zMid,
           p: P,
-          base: baseColors[i % baseColors.length] || baseColors[0],
+          base: baseColors[baseIdx] || baseColors[0],
+          baseIdx: baseIdx,
+          id: bases[baseIdx].id,
           pw: (P.p1 + P.p2) / 2,
         });
       }
@@ -180,16 +182,17 @@ const bases = influences.map((t) => ({
           ctx.stroke();
         } else {
           const depth = clamp(0.5 + it.z / (2 * R), 0, 1);
-          const shade = 0.4 + 0.6 * depth;
+          const isHovered = it.baseIdx === hoveredBaseIdx;
+          const shade = isHovered ? 1 : 0.4 + 0.6 * depth;
           // Rung bar.
           ctx.strokeStyle = dim(it.base.color, shade);
-          ctx.lineWidth = Math.max(1.5, 3 * it.pw);
+          ctx.lineWidth = Math.max(1.5, (isHovered ? 4 : 3) * it.pw);
           ctx.beginPath();
           ctx.moveTo(it.p.sx1, it.p.y);
           ctx.lineTo(it.p.sx2, it.p.y);
           ctx.stroke();
           // Node beads (slightly brighter than the bar).
-          const nr = nodeR * it.pw;
+          const nr = nodeR * it.pw * (isHovered ? 1.4 : 1);
           ctx.fillStyle = dim(it.base.color, Math.min(1, shade + 0.15));
           ctx.beginPath();
           ctx.arc(it.p.sx1, it.p.y, nr, 0, Math.PI * 2);
@@ -197,6 +200,15 @@ const bases = influences.map((t) => ({
           ctx.beginPath();
           ctx.arc(it.p.sx2, it.p.y, nr, 0, Math.PI * 2);
           ctx.fill();
+
+          // Record a clickable hit region for this base.
+          clickTargets.push({
+            id: it.id,
+            baseIdx: it.baseIdx,
+            y: it.p.y,
+            x1: Math.min(it.p.sx1, it.p.sx2),
+            x2: Math.max(it.p.sx1, it.p.sx2),
+          });
         }
       }
     }
@@ -210,6 +222,44 @@ const bases = influences.map((t) => ({
         attributeFilter: ['data-theme'],
       });
     }
+
+    // Make the colored base rungs clickable (hover highlight + navigate).
+    // The canvas is a pointer enhancement; the chips below remain the
+    // keyboard-accessible navigation.
+    function hitTest(evt) {
+      const rect = canvas.getBoundingClientRect();
+      const x = evt.clientX - rect.left;
+      const y = evt.clientY - rect.top;
+      for (let i = clickTargets.length - 1; i >= 0; i--) {
+        const t = clickTargets[i];
+        if (y >= t.y - 14 && y <= t.y + 14 && x >= t.x1 && x <= t.x2) {
+          return t;
+        }
+      }
+      return null;
+    }
+
+    canvas.addEventListener('pointermove', function (evt) {
+      const t = hitTest(evt);
+      const next = t ? t.baseIdx : -1;
+      if (next !== hoveredBaseIdx) {
+        hoveredBaseIdx = next;
+        canvas.style.cursor = t ? 'pointer' : 'default';
+      }
+    });
+
+    canvas.addEventListener('pointerleave', function () {
+      hoveredBaseIdx = -1;
+      canvas.style.cursor = 'default';
+    });
+
+    canvas.addEventListener('click', function (evt) {
+      const t = hitTest(evt);
+      if (t && t.id) {
+        const target = document.getElementById('track-' + t.id);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
 
     if (reduceMotion) {
       draw(-0.6);

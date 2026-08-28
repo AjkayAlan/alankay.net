@@ -375,25 +375,8 @@ button {
   width: 100%;
 }
 
-.dna__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.dna__title {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
 .dna__canvas-wrap {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .dna__canvas {
