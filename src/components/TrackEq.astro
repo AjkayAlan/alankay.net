@@ -2,7 +2,7 @@
 import { influences } from '../data/influences';
 ---
 
-<div class="eq" aria-hidden="true">
+<nav class="eq" aria-label="Influences">
   <div class="eq__header">
     <span class="eq__title">Four tracks, one person</span>
     <span class="eq__title">MIX</span>
@@ -11,24 +11,25 @@ import { influences } from '../data/influences';
     influences.map((track, i) => {
       const level = `${78 - i * 16}%`;
       return (
-        <div
+        <a
           class="eq__track"
+          href={`#track-${track.id}`}
           style={`--track-color: ${track.color}; --level: ${level};`}
         >
           <span class="eq__num">{track.number}</span>
           <span class="eq__name">{track.label}</span>
-          <span class="eq__meter">
+          <span class="eq__meter" aria-hidden="true">
             <span
               class="eq__fill"
               data-eq-bar
               style={`--track-color: ${track.color}; --level: ${level}; --fill-delay: ${i * 110}ms;`}
             ></span>
           </span>
-        </div>
+        </a>
       );
     })
   }
-</div>
+</nav>
 
 <script>
   const bars = document.querySelectorAll<HTMLElement>('[data-eq-bar]');

@@ -18,7 +18,11 @@ import { influences } from '../data/influences';
     <div class="channels">
       {
         influences.map((track, i) => (
-          <article class="channel reveal" style={`--channel-color: ${track.color}; --reveal-delay: ${i * 80}ms;`}>
+          <article
+            class="channel reveal"
+            id={`track-${track.id}`}
+            style={`--channel-color: ${track.color}; --reveal-delay: ${i * 80}ms;`}
+          >
             <header class="channel__head">
               <span class="channel__swatch" aria-hidden="true"></span>
               <span class="channel__num">{track.number}</span>
@@ -34,16 +38,12 @@ import { influences } from '../data/influences';
       }
     </div>
 
-    <p class="about__close reveal">
-      So who am I? I am a young professional with an ambitious attitude. I am a
-      graduate of Drake University, with a double major in information systems
-      and marketing, and a minor in computer science. I have worked as a
-      warehouse worker and as a data collector at MacLean Power Systems, a
-      student helper at the Drake support center, a systems administrator
-      assistant in the CBPA at Drake, and as an application developer at
-      Principal Financial Group. I constantly am pushing myself to further my
-      education and to gain knowledge and skills. I am a dedicated, hard worker.
-      I am a great friend. I am Alan Kay.
-    </p>
+    <div class="about__close reveal">
+      <h2 class="about__close-title">So who am I?</h2>
+      <p class="about__close-sign">
+        A young professional with an ambitious attitude — a dedicated, hard
+        worker and a great friend. <strong>I am Alan Kay.</strong>
+      </p>
+    </div>
   </div>
 </section>

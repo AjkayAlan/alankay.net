@@ -263,13 +263,6 @@ button {
   color: var(--text-muted);
 }
 
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -343,12 +336,6 @@ button {
   color: var(--color-ink);
 }
 
-.hero__portrait-meta {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-}
-
 /* ---------- Signature: four-track EQ ---------- */
 .eq {
   margin-top: 0.5rem;
@@ -379,6 +366,18 @@ button {
   grid-template-columns: 2.5rem 1fr auto;
   align-items: center;
   gap: 1rem;
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.eq__track:hover,
+.eq__track:focus-visible {
+  background-color: color-mix(in srgb, var(--track-color) 8%, transparent);
+}
+
+.eq__track:hover .eq__name,
+.eq__track:focus-visible .eq__name {
+  color: var(--track-color);
 }
 
 .eq__num {
@@ -492,10 +491,27 @@ button {
 
 .about__close {
   margin-top: clamp(2.5rem, 6vw, 4rem);
+  max-width: 58ch;
+}
+
+.about__close-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-xl);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-ink);
+  margin-bottom: 0.6rem;
+}
+
+.about__close-sign {
   font-size: var(--text-lg);
   line-height: 1.6;
-  max-width: 58ch;
   color: var(--text);
+}
+
+.about__close-sign strong {
+  font-weight: 600;
 }
 
 /* ---------- Resume ---------- */
