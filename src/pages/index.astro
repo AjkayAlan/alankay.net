@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Resume from '../components/Resume.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<BaseLayout
+  title="Alan Kay — Technology Enthusiast & Professional Geek"
+  description="Personal website of Alan Kay: a more detailed look at who he is — his influences, resume, and how to get in touch."
+>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <About />
+    <Resume />
+    <Contact />
+  </main>
+  <footer class="site-footer">
+    <div class="wrap site-footer__inner">
+      <span>© {new Date().getFullYear()} Alan Kay</span>
+      <span>Built with Astro · Hosted on Cloudflare Pages</span>
+    </div>
+  </footer>
+</BaseLayout>
+
+<script>
+  const revealEls = document.querySelectorAll<HTMLElement>('.reveal');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            el.style.transitionDelay = el.style.getPropertyValue('--reveal-delay') || '0ms';
+            el.classList.add('is-visible');
+            observer.unobserve(el);
+          }
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+    );
+
+    revealEls.forEach((el) => observer.observe(el));
+  }
+</script>

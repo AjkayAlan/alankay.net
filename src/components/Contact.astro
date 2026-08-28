@@ -1,0 +1,36 @@
+---
+import { socials } from '../data/socials';
+---
+
+<section class="section" id="contact" aria-labelledby="contact-heading">
+  <div class="wrap">
+    <p class="eyebrow">03 — Contact</p>
+    <h2 class="section-title" id="contact-heading">Contact me</h2>
+    <p class="contact__lead">
+      If you wish to contact me, please do so by using one of the methods below.
+    </p>
+
+    <div class="contact__grid">
+      {
+        socials.map((social) => (
+          <a
+            class="contact-card reveal"
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg
+              class="contact-card__icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d={social.glyph} />
+            </svg>
+            <span class="contact-card__label">{social.label}</span>
+            <span class="contact-card__meta" aria-hidden="true">↗</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

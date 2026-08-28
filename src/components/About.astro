@@ -1,0 +1,49 @@
+---
+import { influences } from '../data/influences';
+---
+
+<section class="section" id="about" aria-labelledby="about-heading">
+  <div class="wrap">
+    <p class="eyebrow">01 — About</p>
+    <h2 class="section-title" id="about-heading">About me</h2>
+
+    <p class="about__lead">
+      I feel that my influences in my life have truly formed what is known as
+      “me”. Through my life up to this point, I have had four great influences
+      which have lead me towards where I am now. Hockey, band, computers, and my
+      parents all created a personality for myself which plays a large role in
+      my every day decisions.
+    </p>
+
+    <div class="channels">
+      {
+        influences.map((track, i) => (
+          <article class="channel reveal" style={`--channel-color: ${track.color}; --reveal-delay: ${i * 80}ms;`}>
+            <header class="channel__head">
+              <span class="channel__swatch" aria-hidden="true"></span>
+              <span class="channel__num">{track.number}</span>
+              <h3 class="channel__name">{track.label}</h3>
+            </header>
+            <div class="channel__body">
+              {track.paragraphs.map((p) => (
+                <p>{p}</p>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="about__close reveal">
+      So who am I? I am a young professional with an ambitious attitude. I am a
+      graduate of Drake University, with a double major in information systems
+      and marketing, and a minor in computer science. I have worked as a
+      warehouse worker and as a data collector at MacLean Power Systems, a
+      student helper at the Drake support center, a systems administrator
+      assistant in the CBPA at Drake, and as an application developer at
+      Principal Financial Group. I constantly am pushing myself to further my
+      education and to gain knowledge and skills. I am a dedicated, hard worker.
+      I am a great friend. I am Alan Kay.
+    </p>
+  </div>
+</section>

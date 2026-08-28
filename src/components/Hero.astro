@@ -1,0 +1,39 @@
+---
+import TrackEq from './TrackEq.astro';
+---
+
+<header class="hero" id="top">
+  <div class="wrap hero__grid">
+    <div class="hero__content">
+      <p class="eyebrow">alan.kay — personal site</p>
+      <h1 class="hero__title">
+        Technology enthusiast.<br />
+        <span class="accent">Professional geek.</span>
+      </h1>
+      <p class="hero__intro">
+        A more detailed look at who I am and what I’ve done — the things I don’t
+        post on LinkedIn and the other socials.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#about">Who am I? <span aria-hidden="true">↓</span></a>
+        <a class="btn btn--ghost" href="#resume">View resume</a>
+      </div>
+
+      <TrackEq />
+    </div>
+
+    <figure class="hero__portrait">
+      <img
+        src="/portrait.jpg"
+        alt="Portrait of Alan Kay"
+        width="900"
+        height="1200"
+        fetchpriority="high"
+      />
+      <figcaption>
+        <span class="hero__portrait-name">Alan Kay</span>
+        <span class="hero__portrait-meta">Drake University · IS &amp; Marketing</span>
+      </figcaption>
+    </figure>
+  </div>
+</header>
