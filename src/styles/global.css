@@ -382,12 +382,13 @@ button {
 .dna__canvas {
   display: block;
   width: 100%;
-  height: clamp(14rem, 34vw, 20rem);
+  height: clamp(16rem, 42vw, 26rem);
 }
 
 .dna__chips {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5rem;
   list-style: none;
   margin: 1rem 0 0;
