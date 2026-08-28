@@ -46,7 +46,7 @@ const bases = influences.map((t) => ({
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const TURNS = 1.75; // number of full twists over the helix length
-    const RUNGS = 16; // resolution of base pairs
+    const RUNGS = 10; // 2.5 base sequences (H·B·C·P repeated 2.5×)
     const SPEED = 0.0008; // radians per ms (≈7.9s per full revolution)
 
     let baseColors = [];
@@ -106,10 +106,9 @@ const bases = influences.map((t) => ({
       const nodeR = Math.max(2, Math.min(w, h) * 0.017);
       const f = h * 1.7; // perspective focal length
 
-      // Position each rung's two backbone nodes in 3D, then project.
-      const pts = [];
-      for (let i = 0; i < RUNGS; i++) {
-        const t = i / (RUNGS - 1);
+      // Continuous helix sampling: project a helix node for both strands at
+      // any t in [0,1] so the backbone can be drawn as a smooth flowing curve.
+      function helixPoint(t) {
         const y = top + (bottom - top) * t;
         const phase = t * TURNS * Math.PI * 2;
         const a1 = phase + rotation;
@@ -120,35 +119,58 @@ const bases = influences.map((t) => ({
         const z2 = R * Math.sin(a2);
         const p1 = f / (f + z1);
         const p2 = f / (f + z2);
-        pts.push({
+        return {
           y: y,
           sx1: cx + (x1 - cx) * p1,
           sx2: cx + (x2 - cx) * p2,
           z1: z1,
           z2: z2,
-          zMid: (z1 + z2) / 2,
           p1: p1,
           p2: p2,
-        });
+        };
+      }
+
+      // Rung nodes (the base pairs) at RUNGS positions.
+      const pts = [];
+      for (let i = 0; i < RUNGS; i++) {
+        const P = helixPoint(i / (RUNGS - 1));
+        P.zMid = (P.z1 + P.z2) / 2;
+        pts.push(P);
       }
 
       // Build a unified list of drawables (backbone segments + rungs) and
       // depth-sort far→near so the strands correctly cross in front/behind.
       const items = [];
 
+      const SUB = 5; // subdivisions between rungs for a rounded, fluid backbone
       for (let s = 0; s < 2; s++) {
         for (let i = 0; i < RUNGS - 1; i++) {
           const A = pts[i];
-          const B = pts[i + 1];
-          items.push({
-            kind: 'backbone',
-            z: ((s === 0 ? A.z1 : A.z2) + (s === 0 ? B.z1 : B.z2)) / 2,
-            x1: s === 0 ? A.sx1 : A.sx2,
-            y1: A.y,
-            x2: s === 0 ? B.sx1 : B.sx2,
-            y2: B.y,
-            w: (A.p1 + B.p1 + A.p2 + B.p2) / 4,
-          });
+          let prev = s === 0 ? A.sx1 : A.sx2;
+          let prevY = A.y;
+          let prevZ = s === 0 ? A.z1 : A.z2;
+          let prevP = s === 0 ? A.p1 : A.p2;
+          for (let k = 1; k <= SUB; k++) {
+            const tt = (i + k / SUB) / (RUNGS - 1);
+            const M = helixPoint(tt);
+            const mx = s === 0 ? M.sx1 : M.sx2;
+            const my = M.y;
+            const mz = s === 0 ? M.z1 : M.z2;
+            const mp = s === 0 ? M.p1 : M.p2;
+            items.push({
+              kind: 'backbone',
+              z: (prevZ + mz) / 2,
+              x1: prev,
+              y1: prevY,
+              x2: mx,
+              y2: my,
+              w: (prevP + mp) / 2,
+            });
+            prev = mx;
+            prevY = my;
+            prevZ = mz;
+            prevP = mp;
+          }
         }
       }
 
@@ -171,6 +193,7 @@ const bases = influences.map((t) => ({
       });
 
       ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
 
       for (const it of items) {
         if (it.kind === 'backbone') {
