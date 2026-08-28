@@ -264,7 +264,7 @@ button {
 
 .hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 0.65fr);
   align-items: center;
   gap: clamp(2.5rem, 6vw, 5rem);
 }
@@ -273,6 +273,18 @@ button {
   display: grid;
   gap: 1.5rem;
   justify-items: start;
+}
+
+/* Right-hand DNA column: taller + narrower than the old full-width banner. */
+.hero__dna {
+  justify-self: center;
+  width: 100%;
+  max-width: 22rem;
+}
+
+.hero__dna .dna__canvas {
+  /* Tall, narrow helix — reads like a DNA column, not a banner. */
+  height: clamp(22rem, 52vh, 30rem);
 }
 
 .hero__title {
@@ -336,11 +348,10 @@ button {
 
 /* ---------- Hero portrait ---------- */
 .hero__portrait {
-  margin: 0;
+  margin: 0.25rem 0 0;
   display: grid;
   gap: 0.9rem;
-  justify-self: end;
-  max-width: 22rem;
+  max-width: 19rem;
 }
 
 .hero__portrait img {
@@ -745,10 +756,14 @@ button {
     gap: 2.5rem;
   }
 
-  .hero__portrait {
-    justify-self: center;
+  .hero__dna {
     order: 2;
     max-width: min(22rem, 82vw);
+  }
+
+  .hero__portrait {
+    justify-self: center;
+    max-width: min(19rem, 72vw);
   }
 
   .nav-links {

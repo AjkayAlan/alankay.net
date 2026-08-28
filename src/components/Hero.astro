@@ -13,20 +13,22 @@ import DnaHelix from './DnaHelix.astro';
         A deeper dive into who I am — the four influences in my DNA.
       </p>
 
-      <DnaHelix />
+      <figure class="hero__portrait">
+        <img
+          src="/portrait.jpg"
+          alt="Portrait of Alan Kay"
+          width="900"
+          height="1200"
+          fetchpriority="high"
+        />
+        <figcaption>
+          <span class="hero__portrait-name">Alan Kay</span>
+        </figcaption>
+      </figure>
     </div>
 
-    <figure class="hero__portrait">
-      <img
-        src="/portrait.jpg"
-        alt="Portrait of Alan Kay"
-        width="900"
-        height="1200"
-        fetchpriority="high"
-      />
-      <figcaption>
-        <span class="hero__portrait-name">Alan Kay</span>
-      </figcaption>
-    </figure>
+    <div class="hero__dna">
+      <DnaHelix />
+    </div>
   </div>
 </header>

@@ -100,7 +100,7 @@ const bases = influences.map((t) => ({
       const cx = w / 2;
       // Radius scales with width (a middle ground between too-narrow and
       // too-wide) and is capped by height for shorter viewports.
-      const R = Math.min(w * 0.24, h * 0.45);
+      const R = Math.min(w * 0.2, h * 0.42);
       const top = h * 0.14;
       const bottom = h * 0.86;
       const nodeR = Math.max(2, Math.min(w, h) * 0.017);
