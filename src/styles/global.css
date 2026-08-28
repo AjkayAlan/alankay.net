@@ -131,7 +131,13 @@ button {
 }
 
 .section {
-  padding-block: clamp(4rem, 10vw, 7.5rem);
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+
+/* The About section opens right after the hero's EQ strip; pull its top edge
+   up so the gap to "About me" is tight rather than a double stack of padding. */
+#about {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .eyebrow {
@@ -226,7 +232,7 @@ button {
 .hero {
   position: relative;
   overflow: hidden;
-  padding-block: clamp(4rem, 12vh, 8rem) clamp(4rem, 10vh, 6rem);
+  padding-block: clamp(4rem, 12vh, 8rem) clamp(1.5rem, 4vh, 2.5rem);
 }
 
 .hero__grid {
