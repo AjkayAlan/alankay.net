@@ -24,7 +24,7 @@ import { influences } from '../data/influences';
             style={`--channel-color: ${track.color}; --reveal-delay: ${i * 80}ms;`}
           >
             <header class="channel__head">
-              <span class="channel__swatch" aria-hidden="true"></span>
+              <span class="channel__badge" aria-hidden="true">{track.letter}</span>
               <span class="channel__num">{track.number}</span>
               <h3 class="channel__name">{track.label}</h3>
             </header>

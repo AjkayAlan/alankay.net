@@ -13,28 +13,54 @@ const links = [
       <span class="brand__cursor" aria-hidden="true"></span>
     </a>
 
-    <button
-      class="nav-toggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="site-nav-links"
-      data-nav-toggle
-    >
-      <span data-nav-label>Menu</span>
-      <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
-        <path d="M0 2h14M0 7h14M0 12h14" stroke="currentColor" stroke-width="1.5" />
-      </svg>
-    </button>
+    <div class="nav-actions">
+      <ul class="nav-links" id="site-nav-links">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
 
-    <ul class="nav-links" id="site-nav-links">
-      {
-        links.map((link) => (
-          <li>
-            <a href={link.href}>{link.label}</a>
-          </li>
-        ))
-      }
-    </ul>
+      <button
+        class="theme-toggle"
+        type="button"
+        data-theme-toggle
+        aria-label="Switch to dark theme"
+        title="Toggle color theme"
+      >
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+          <path
+            d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4 19 19M19 5l-1.6 1.6M6.6 17.4 5 19"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M20.4 14.2A8.5 8.5 0 0 1 9.8 3.6 8.5 8.5 0 1 0 20.4 14.2Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav-links"
+        data-nav-toggle
+      >
+        <span data-nav-label>Menu</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+          <path d="M0 2h14M0 7h14M0 12h14" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -59,5 +85,34 @@ const links = [
         label.textContent = 'Menu';
       }
     });
+  }
+
+  // Theme toggle
+  const themeToggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+
+  if (themeToggle) {
+    const root = document.documentElement;
+    const current = () => root.getAttribute('data-theme') || 'light';
+
+    const sync = () => {
+      const isDark = current() === 'dark';
+      themeToggle.setAttribute(
+        'aria-label',
+        isDark ? 'Switch to light theme' : 'Switch to dark theme',
+      );
+    };
+
+    themeToggle.addEventListener('click', () => {
+      const next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('theme', next);
+      } catch {
+        /* ignore storage errors */
+      }
+      sync();
+    });
+
+    sync();
   }
 </script>

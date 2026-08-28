@@ -1,0 +1,119 @@
+---
+import { influences } from '../data/influences';
+
+// Helix geometry. We render one full double-helix "ladder" with four rungs.
+// Each rung is a base pair: left backbone node → base letter → right backbone node.
+const RUNG_COUNT = influences.length;
+const WIDTH = 320;
+const HEIGHT = 200;
+const PAD_X = 30;
+const PAD_Y = 22;
+const STEP_X = (WIDTH - PAD_X * 2) / (RUNG_COUNT - 1);
+const AMP = 34; // backbone sine amplitude (visual "twist")
+const X_LEFT = (i: number) => PAD_X + i * STEP_X;
+const X_RIGHT = (i: number) => WIDTH - PAD_X - i * STEP_X;
+const Y = (i: number) => PAD_Y + ((HEIGHT - PAD_Y * 2) / (RUNG_COUNT - 1)) * i;
+---
+
+<nav class="dna" aria-label="Influences">
+  <div class="dna__header">
+    <span class="dna__title">Four bases, one sequence</span>
+    <span class="dna__title">H · B · C · P</span>
+  </div>
+
+  <svg
+    class="dna__svg"
+    viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+    role="img"
+    aria-label="A DNA double helix whose four base pairs are Hockey, Band, Computers, and Parents"
+  >
+    <!-- Backbones -->
+    <path
+      class="dna__strand dna__strand--left"
+      d={
+        influences
+          .map((_, i) => `${i === 0 ? 'M' : 'L'} ${X_LEFT(i)} ${Y(i)}`)
+          .join(' ')
+      }
+    />
+    <path
+      class="dna__strand dna__strand--right"
+      d={
+        influences
+          .map((_, i) => `${i === 0 ? 'M' : 'L'} ${X_RIGHT(i)} ${Y(i)}`)
+          .join(' ')
+      }
+    />
+
+    <!-- Scanner glow that travels the strand -->
+    <circle class="dna__scanner" r="6" cx={PAD_X} cy={PAD_Y} />
+
+    <!-- Base-pair links -->
+    {
+      influences.map((track, i) => (
+        <a
+          class="dna__rung"
+          href={`#track-${track.id}`}
+          style={`--base-color: ${track.color}; --i: ${i};`}
+          aria-label={`${track.label} — ${track.letter}`}
+        >
+          <circle class="dna__node" cx={X_LEFT(i)} cy={Y(i)} r="5" />
+          <circle class="dna__node" cx={X_RIGHT(i)} cy={Y(i)} r="5" />
+          <line
+            class="dna__bar"
+            x1={X_LEFT(i)}
+            y1={Y(i)}
+            x2={X_RIGHT(i)}
+            y2={Y(i)}
+          />
+          <rect
+            class="dna__letter"
+            x={(X_LEFT(i) + X_RIGHT(i)) / 2 - 11}
+            y={Y(i) - 11}
+            width="22"
+            height="22"
+            rx="6"
+          />
+          <text
+            class="dna__letter-text"
+            x={(X_LEFT(i) + X_RIGHT(i)) / 2}
+            y={Y(i) + 4}
+            text-anchor="middle"
+          >
+            {track.letter}
+          </text>
+        </a>
+      ))
+    }
+  </svg>
+</nav>
+
+<script>
+  const svg = document.querySelector<SVGSVGElement>('.dna__svg');
+  const scanner = document.querySelector<SVGCircleElement>('.dna__scanner');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (svg && scanner && !reduceMotion) {
+    const width = Number(svg.getAttribute('viewBox')?.split(' ')[2] ?? 320);
+    const height = Number(svg.getAttribute('viewBox')?.split(' ')[3] ?? 200);
+
+    // Animate the scanner along a gentle sine over the full length.
+    let start: number | null = null;
+    const duration = 4200; // ms per pass
+
+    const step = (t: number) => {
+      if (start === null) start = t;
+      const p = ((t - start) % duration) / duration;
+      const x = 30 + (width - 60) * p;
+      const y = height / 2 + Math.sin(p * Math.PI * 2) * 26;
+      scanner.setAttribute('cx', String(x));
+      scanner.setAttribute('cy', String(y));
+      requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
+  } else if (scanner && reduceMotion) {
+    // Hide the scanner entirely when reduced motion is requested.
+    scanner.setAttribute('opacity', '0');
+  }
+</script>

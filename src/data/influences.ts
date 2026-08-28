@@ -2,6 +2,8 @@ export interface Influence {
   id: string;
   /** Zero-padded channel number shown in the UI (e.g. "01"). */
   number: string;
+  /** Single-letter "base" code used in the DNA sequence (e.g. "H"). */
+  letter: string;
   label: string;
   /** Named accent color from the design tokens. */
   color: string;
@@ -12,6 +14,7 @@ export const influences: Influence[] = [
   {
     id: 'hockey',
     number: '01',
+    letter: 'H',
     label: 'Hockey',
     color: 'var(--color-hockey)',
     paragraphs: [
@@ -22,6 +25,7 @@ export const influences: Influence[] = [
   {
     id: 'band',
     number: '02',
+    letter: 'B',
     label: 'Band',
     color: 'var(--color-band)',
     paragraphs: [
@@ -32,6 +36,7 @@ export const influences: Influence[] = [
   {
     id: 'computers',
     number: '03',
+    letter: 'C',
     label: 'Computers',
     color: 'var(--color-computers)',
     paragraphs: [
@@ -42,6 +47,7 @@ export const influences: Influence[] = [
   {
     id: 'parents',
     number: '04',
+    letter: 'P',
     label: 'Parents',
     color: 'var(--color-parents)',
     paragraphs: [

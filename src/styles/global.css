@@ -1,24 +1,29 @@
 /* ============================================================
-   alankay.net — "Four Tracks, One Person"
+   alankay.net — "Your genome"
    Design tokens, reset, and component styles.
    ============================================================ */
 
+/* ---------- Theme tokens ---------- */
 :root {
-  /* Palette */
-  --color-ink: #15202b;
-  --color-paper: #f4f7f9;
-  --color-paper-deep: #e9eff4;
+  color-scheme: light;
+
+  /* Identity sequence — identical in both themes. */
   --color-hockey: #2d9cdb;
   --color-band: #d9a521;
   --color-computers: #23a26d;
   --color-parents: #e0675a;
 
-  /* Neutrals */
+  /* Light theme neutrals */
+  --bg: #f4f7f9;
+  --bg-soft: #e9eff4;
+  --surface: #ffffff;
   --text: #15202b;
   --text-muted: #53616f;
   --line: rgba(21, 32, 43, 0.14);
   --line-strong: rgba(21, 32, 43, 0.24);
-  --surface: #ffffff;
+  --ink: #15202b;
+  --on-ink: #ffffff;
+  --shadow: rgba(21, 32, 43, 0.18);
 
   /* Type */
   --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
@@ -52,6 +57,22 @@
   --dur-med: 320ms;
 }
 
+/* Deep ink navy dark theme. */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0b1219;
+  --bg-soft: #121c26;
+  --surface: #111c26;
+  --text: #e8eef4;
+  --text-muted: #93a4b4;
+  --line: rgba(232, 238, 244, 0.14);
+  --line-strong: rgba(232, 238, 244, 0.28);
+  --ink: #1a2632;
+  --on-ink: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
 /* ---------- Reset ---------- */
 *,
 *::before,
@@ -74,9 +95,11 @@ body {
   font-size: var(--text-base);
   line-height: 1.7;
   color: var(--text);
-  background-color: var(--color-paper);
+  background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color var(--dur-med) var(--ease-out),
+    color var(--dur-med) var(--ease-out);
 }
 
 img,
@@ -113,8 +136,8 @@ button {
   left: var(--gutter);
   z-index: 100;
   padding: 0.6rem 1rem;
-  background: var(--color-ink);
-  color: #fff;
+  background: var(--ink);
+  color: var(--on-ink);
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   border-radius: 0 0 8px 8px;
@@ -123,7 +146,7 @@ button {
 
 .skip-link:focus {
   top: 0;
-  color: #fff;
+  color: var(--on-ink);
 }
 
 /* ---------- Shared layout ---------- */
@@ -159,7 +182,7 @@ button {
   top: 0;
   z-index: 50;
   height: var(--nav-height);
-  background: color-mix(in srgb, var(--color-paper) 88%, transparent);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
@@ -259,7 +282,7 @@ button {
   line-height: 1.05;
   letter-spacing: -0.03em;
   max-width: 18ch;
-  color: var(--color-ink);
+  color: var(--text);
 }
 
 .hero__title .accent {
@@ -289,14 +312,14 @@ button {
 }
 
 .btn--primary {
-  background: var(--color-ink);
-  color: #fff;
+  background: var(--ink);
+  color: var(--on-ink);
 }
 
 .btn--primary:hover,
 .btn--primary:focus-visible {
   background: var(--color-hockey);
-  color: #fff;
+  color: var(--on-ink);
   transform: translateY(-2px);
 }
 
@@ -307,7 +330,7 @@ button {
 
 .btn--ghost:hover,
 .btn--ghost:focus-visible {
-  border-color: var(--color-ink);
+  border-color: var(--text);
   transform: translateY(-2px);
 }
 
@@ -327,8 +350,8 @@ button {
   object-fit: cover;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  box-shadow: 0 24px 48px -24px rgba(21, 32, 43, 0.35);
-  background: var(--color-paper-deep);
+  box-shadow: 0 24px 48px -24px var(--shadow);
+  background: var(--bg-soft);
 }
 
 .hero__portrait figcaption {
@@ -343,15 +366,16 @@ button {
   font-weight: 600;
   font-size: var(--text-sm);
   letter-spacing: 0.03em;
-  color: var(--color-ink);
+  color: var(--text);
 }
 
-/* ---------- Signature: four-track EQ ---------- */
-.eq {
-  margin-top: 0.5rem;
+/* ---------- Signature: DNA helix ---------- */
+.dna {
+  margin-top: 0;
+  width: 100%;
 }
 
-.eq__header {
+.dna__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -360,7 +384,7 @@ button {
   border-bottom: 1px solid var(--line);
 }
 
-.eq__title {
+.dna__title {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   letter-spacing: 0.14em;
@@ -368,58 +392,124 @@ button {
   color: var(--text-muted);
 }
 
-.eq__track {
-  position: relative;
-  padding-block: 0.9rem;
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 2.5rem 1fr auto;
+.dna__svg {
+  width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  overflow: visible;
+}
+
+.dna__strand {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dna__node {
+  fill: var(--bg-soft);
+  stroke: var(--base-color);
+  stroke-width: 2.5;
+}
+
+.dna__bar {
+  stroke: var(--base-color);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.85;
+}
+
+.dna__letter {
+  fill: var(--base-color);
+}
+
+.dna__letter-text {
+  fill: #fff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.dna__rung {
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.dna__rung:hover,
+.dna__rung:focus-visible {
+  opacity: 0.7;
+  outline: none;
+}
+
+.dna__rung:focus-visible .dna__letter {
+  stroke: var(--text);
+  stroke-width: 2;
+}
+
+.dna__scanner {
+  fill: var(--color-computers);
+  fill-opacity: 0.9;
+  filter: drop-shadow(0 0 6px var(--color-computers));
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Letter badge (About cards) */
+.channel__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 6px;
+  background: var(--channel-color);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  flex-shrink: 0;
+}
+
+/* Theme toggle */
+.nav-actions {
+  display: flex;
   align-items: center;
   gap: 1rem;
-  text-decoration: none;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  color: var(--text);
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 
-.eq__track:hover,
-.eq__track:focus-visible {
-  background-color: color-mix(in srgb, var(--track-color) 8%, transparent);
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  background: var(--bg-soft);
 }
 
-.eq__track:hover .eq__name,
-.eq__track:focus-visible .eq__name {
-  color: var(--track-color);
+.theme-toggle__icon {
+  display: none;
 }
 
-.eq__num {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-}
-
-.eq__name {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-}
-
-.eq__meter {
-  width: clamp(6rem, 20vw, 11rem);
-  height: 8px;
-  border-radius: 999px;
-  background: var(--color-paper-deep);
-  overflow: hidden;
-}
-
-.eq__fill {
-  height: 100%;
-  width: 0;
-  border-radius: 999px;
-  background: var(--track-color, var(--color-hockey));
-  transition: width 700ms var(--ease-out);
-  transition-delay: var(--fill-delay, 0ms);
+[data-theme='light'] .theme-toggle__icon--sun,
+[data-theme='dark'] .theme-toggle__icon--moon {
+  display: block;
 }
 
 /* ---------- Section titles ---------- */
@@ -429,7 +519,7 @@ button {
   font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
   letter-spacing: -0.02em;
   line-height: 1.1;
-  color: var(--color-ink);
+  color: var(--text);
   margin-top: 0.5rem;
   margin-bottom: 1rem;
 }
@@ -457,7 +547,7 @@ button {
 }
 
 .channel:hover {
-  box-shadow: 0 12px 32px -16px rgba(21, 32, 43, 0.25);
+  box-shadow: 0 12px 32px -16px var(--shadow);
 }
 
 .channel__head {
@@ -466,14 +556,6 @@ button {
   gap: 0.9rem;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--line);
-}
-
-.channel__swatch {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  background: var(--channel-color);
-  flex-shrink: 0;
 }
 
 .channel__num {
@@ -488,7 +570,7 @@ button {
   font-size: var(--text-sm);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-ink);
+  color: var(--text);
 }
 
 .channel__body {
@@ -510,7 +592,7 @@ button {
   font-size: var(--text-xl);
   letter-spacing: -0.02em;
   line-height: 1.1;
-  color: var(--color-ink);
+  color: var(--text);
   margin-bottom: 0.6rem;
 }
 
@@ -526,8 +608,8 @@ button {
 
 /* ---------- Resume ---------- */
 .resume {
-  background: var(--color-ink);
-  color: #eaf0f5;
+  background: var(--ink);
+  color: var(--on-ink);
 }
 
 .resume .eyebrow {
@@ -548,7 +630,7 @@ button {
   font-weight: 700;
   font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--on-ink);
 }
 
 .resume__frame {
@@ -612,7 +694,7 @@ button {
 .contact-card__icon {
   width: 1.35rem;
   height: 1.35rem;
-  fill: var(--color-ink);
+  fill: var(--text);
   flex-shrink: 0;
 }
 
@@ -706,7 +788,7 @@ button {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    background: var(--color-paper);
+    background: var(--bg);
     border-bottom: 1px solid var(--line);
     padding: 0.5rem var(--gutter) 1rem;
     display: none;
@@ -725,14 +807,5 @@ button {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-  }
-
-  .eq__track {
-    grid-template-columns: 2rem 1fr;
-  }
-
-  .eq__meter {
-    grid-column: 2;
-    width: 100%;
   }
 }
