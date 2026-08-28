@@ -1,119 +1,243 @@
 ---
 import { influences } from '../data/influences';
 
-// Helix geometry. We render one full double-helix "ladder" with four rungs.
-// Each rung is a base pair: left backbone node → base letter → right backbone node.
-const RUNG_COUNT = influences.length;
-const WIDTH = 320;
-const HEIGHT = 200;
-const PAD_X = 30;
-const PAD_Y = 22;
-const STEP_X = (WIDTH - PAD_X * 2) / (RUNG_COUNT - 1);
-const AMP = 34; // backbone sine amplitude (visual "twist")
-const X_LEFT = (i: number) => PAD_X + i * STEP_X;
-const X_RIGHT = (i: number) => WIDTH - PAD_X - i * STEP_X;
-const Y = (i: number) => PAD_Y + ((HEIGHT - PAD_Y * 2) / (RUNG_COUNT - 1)) * i;
+// Data for the client-side helix renderer: the four bases, their letter,
+// section anchor, and the CSS var that holds their color.
+const bases = influences.map((t) => ({
+  letter: t.letter,
+  id: t.id,
+  label: t.label,
+  colorVar: t.color,
+}));
 ---
 
 <nav class="dna" aria-label="Influences">
   <div class="dna__header">
-    <span class="dna__title">Four bases, one sequence</span>
+    <span class="dna__title">Four bases, one genome</span>
     <span class="dna__title">H · B · C · P</span>
   </div>
 
-  <svg
-    class="dna__svg"
-    viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-    role="img"
-    aria-label="A DNA double helix whose four base pairs are Hockey, Band, Computers, and Parents"
-  >
-    <!-- Backbones -->
-    <path
-      class="dna__strand dna__strand--left"
-      d={
-        influences
-          .map((_, i) => `${i === 0 ? 'M' : 'L'} ${X_LEFT(i)} ${Y(i)}`)
-          .join(' ')
-      }
-    />
-    <path
-      class="dna__strand dna__strand--right"
-      d={
-        influences
-          .map((_, i) => `${i === 0 ? 'M' : 'L'} ${X_RIGHT(i)} ${Y(i)}`)
-          .join(' ')
-      }
-    />
+  <div class="dna__canvas-wrap">
+    <canvas
+      class="dna__canvas"
+      width="640"
+      height="340"
+      aria-hidden="true"
+    >Your browser doesn't support canvas.</canvas>
+  </div>
 
-    <!-- Scanner glow that travels the strand -->
-    <circle class="dna__scanner" r="6" cx={PAD_X} cy={PAD_Y} />
-
-    <!-- Base-pair links -->
+  <ul class="dna__chips">
     {
-      influences.map((track, i) => (
-        <a
-          class="dna__rung"
-          href={`#track-${track.id}`}
-          style={`--base-color: ${track.color}; --i: ${i};`}
-          aria-label={`${track.label} — ${track.letter}`}
-        >
-          <circle class="dna__node" cx={X_LEFT(i)} cy={Y(i)} r="5" />
-          <circle class="dna__node" cx={X_RIGHT(i)} cy={Y(i)} r="5" />
-          <line
-            class="dna__bar"
-            x1={X_LEFT(i)}
-            y1={Y(i)}
-            x2={X_RIGHT(i)}
-            y2={Y(i)}
-          />
-          <rect
-            class="dna__letter"
-            x={(X_LEFT(i) + X_RIGHT(i)) / 2 - 11}
-            y={Y(i) - 11}
-            width="22"
-            height="22"
-            rx="6"
-          />
-          <text
-            class="dna__letter-text"
-            x={(X_LEFT(i) + X_RIGHT(i)) / 2}
-            y={Y(i) + 4}
-            text-anchor="middle"
+      influences.map((track) => (
+        <li>
+          <a
+            class="dna__chip"
+            href={`#track-${track.id}`}
+            style={`--base-color: ${track.color};`}
           >
-            {track.letter}
-          </text>
-        </a>
+            <span class="dna__chip-letter" aria-hidden="true">{track.letter}</span>
+            <span class="dna__chip-label">{track.label}</span>
+          </a>
+        </li>
       ))
     }
-  </svg>
+  </ul>
 </nav>
 
-<script>
-  const svg = document.querySelector<SVGSVGElement>('.dna__svg');
-  const scanner = document.querySelector<SVGCircleElement>('.dna__scanner');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+<script define:vars={{ bases }}>
+  const canvas = document.querySelector('.dna__canvas');
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (svg && scanner && !reduceMotion) {
-    const width = Number(svg.getAttribute('viewBox')?.split(' ')[2] ?? 320);
-    const height = Number(svg.getAttribute('viewBox')?.split(' ')[3] ?? 200);
+    const TURNS = 1.5; // number of full twists over the helix length
+    const RUNGS = 16; // resolution of base pairs
+    const SPEED = 0.0016; // radians per ms (≈3.9s per full revolution)
 
-    // Animate the scanner along a gentle sine over the full length.
-    let start: number | null = null;
-    const duration = 4200; // ms per pass
+    let baseColors = [];
+    let backboneColor = '#53616f';
 
-    const step = (t: number) => {
-      if (start === null) start = t;
-      const p = ((t - start) % duration) / duration;
-      const x = 30 + (width - 60) * p;
-      const y = height / 2 + Math.sin(p * Math.PI * 2) * 26;
-      scanner.setAttribute('cx', String(x));
-      scanner.setAttribute('cy', String(y));
-      requestAnimationFrame(step);
+    const clamp = function (n, lo, hi) {
+      return Math.min(hi, Math.max(lo, n));
     };
 
-    requestAnimationFrame(step);
-  } else if (scanner && reduceMotion) {
-    // Hide the scanner entirely when reduced motion is requested.
-    scanner.setAttribute('opacity', '0');
+    // Resolve theme-dependent colors from CSS custom properties.
+    function resolveColors() {
+      const cs = getComputedStyle(document.documentElement);
+      backboneColor = cs.getPropertyValue('--text-muted').trim();
+      baseColors = bases.map(function (b) {
+        const varName = b.colorVar.replace(/var\((.*)\)/, '$1').trim();
+        return { letter: b.letter, color: cs.getPropertyValue(varName).trim() };
+      });
+    }
+
+    function hexRgb(hex) {
+      const s = hex.replace('#', '');
+      const n = parseInt(s, 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    // Dim a hex color by a 0..1 factor (1 = full brightness).
+    function dim(hex, f) {
+      if (!/^#[0-9a-f]{6}$/i.test(hex)) return hex;
+      const rgb = hexRgb(hex);
+      return 'rgb(' + Math.round(rgb[0] * f) + ', ' + Math.round(rgb[1] * f) + ', ' + Math.round(rgb[2] * f) + ')';
+    }
+
+    function draw(rotation) {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const w = rect.width;
+      const h = rect.height;
+      if (w < 8 || h < 8) return;
+
+      const pw = Math.round(w * dpr);
+      const ph = Math.round(h * dpr);
+      if (canvas.width !== pw) canvas.width = pw;
+      if (canvas.height !== ph) canvas.height = ph;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      const cx = w / 2;
+      const R = Math.min(w, h) * 0.17;
+      const top = h * 0.14;
+      const bottom = h * 0.86;
+      const nodeR = Math.max(2, Math.min(w, h) * 0.017);
+      const f = h * 1.7; // perspective focal length
+
+      // Position each rung's two backbone nodes in 3D, then project.
+      const pts = [];
+      for (let i = 0; i < RUNGS; i++) {
+        const t = i / (RUNGS - 1);
+        const y = top + (bottom - top) * t;
+        const phase = t * TURNS * Math.PI * 2;
+        const a1 = phase + rotation;
+        const a2 = a1 + Math.PI;
+        const x1 = cx + R * Math.cos(a1);
+        const z1 = R * Math.sin(a1);
+        const x2 = cx + R * Math.cos(a2);
+        const z2 = R * Math.sin(a2);
+        const p1 = f / (f + z1);
+        const p2 = f / (f + z2);
+        pts.push({
+          y: y,
+          sx1: cx + (x1 - cx) * p1,
+          sx2: cx + (x2 - cx) * p2,
+          z1: z1,
+          z2: z2,
+          zMid: (z1 + z2) / 2,
+          p1: p1,
+          p2: p2,
+        });
+      }
+
+      // Build a unified list of drawables (backbone segments + rungs) and
+      // depth-sort far→near so the strands correctly cross in front/behind.
+      const items = [];
+
+      for (let s = 0; s < 2; s++) {
+        for (let i = 0; i < RUNGS - 1; i++) {
+          const A = pts[i];
+          const B = pts[i + 1];
+          items.push({
+            kind: 'backbone',
+            z: ((s === 0 ? A.z1 : A.z2) + (s === 0 ? B.z1 : B.z2)) / 2,
+            x1: s === 0 ? A.sx1 : A.sx2,
+            y1: A.y,
+            x2: s === 0 ? B.sx1 : B.sx2,
+            y2: B.y,
+            w: (A.p1 + B.p1 + A.p2 + B.p2) / 4,
+          });
+        }
+      }
+
+      for (let i = 0; i < RUNGS; i++) {
+        const P = pts[i];
+        items.push({
+          kind: 'rung',
+          z: P.zMid,
+          p: P,
+          base: baseColors[i % baseColors.length] || baseColors[0],
+          pw: (P.p1 + P.p2) / 2,
+        });
+      }
+
+      items.sort(function (a, b) {
+        return a.z - b.z;
+      });
+
+      ctx.lineCap = 'round';
+
+      for (const it of items) {
+        if (it.kind === 'backbone') {
+          const depth = clamp(0.5 + it.z / (2 * R), 0, 1);
+          const shade = 0.35 + 0.65 * depth;
+          ctx.strokeStyle = dim(backboneColor, shade);
+          ctx.lineWidth = Math.max(1, 1.4 * it.w);
+          ctx.beginPath();
+          ctx.moveTo(it.x1, it.y1);
+          ctx.lineTo(it.x2, it.y2);
+          ctx.stroke();
+        } else {
+          const depth = clamp(0.5 + it.z / (2 * R), 0, 1);
+          const shade = 0.4 + 0.6 * depth;
+          // Rung bar.
+          ctx.strokeStyle = dim(it.base.color, shade);
+          ctx.lineWidth = Math.max(1.5, 3 * it.pw);
+          ctx.beginPath();
+          ctx.moveTo(it.p.sx1, it.p.y);
+          ctx.lineTo(it.p.sx2, it.p.y);
+          ctx.stroke();
+          // Node beads (slightly brighter than the bar).
+          const nr = nodeR * it.pw;
+          ctx.fillStyle = dim(it.base.color, Math.min(1, shade + 0.15));
+          ctx.beginPath();
+          ctx.arc(it.p.sx1, it.p.y, nr, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(it.p.sx2, it.p.y, nr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    resolveColors();
+
+    // Re-resolve neutral colors when the theme is toggled.
+    if ('MutationObserver' in window) {
+      new MutationObserver(resolveColors).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+    }
+
+    if (reduceMotion) {
+      draw(-0.6);
+      window.addEventListener('resize', function () {
+        draw(-0.6);
+      });
+    } else {
+      let rotation = 0;
+      let last = null;
+      let visible = true;
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          visible = entries[0].isIntersecting;
+        }).observe(canvas);
+      }
+
+      function loop(now) {
+        if (visible) {
+          if (last === null) last = now;
+          rotation += (now - last) * SPEED;
+          draw(rotation);
+        }
+        last = now;
+        requestAnimationFrame(loop);
+      }
+
+      requestAnimationFrame(loop);
+    }
   }
 </script>
