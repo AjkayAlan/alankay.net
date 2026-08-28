@@ -210,7 +210,7 @@ button {
   display: inline-block;
   width: 0.55em;
   height: 1.1em;
-  background: var(--color-computers);
+  background: var(--color-hockey);
   animation: blink 1.1s steps(1) infinite;
 }
 

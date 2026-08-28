@@ -23,11 +23,12 @@ const bases = influences.map((t) => ({
 
   <ul class="dna__chips">
     {
-      influences.map((track) => (
+      influences.map((track, i) => (
         <li>
           <a
             class="dna__chip"
             href={`#track-${track.id}`}
+            data-base-index={i}
             style={`--base-color: ${track.color};`}
           >
             <span class="dna__chip-letter" aria-hidden="true">{track.letter}</span>
@@ -284,6 +285,19 @@ const bases = influences.map((t) => ({
         const target = document.getElementById('track-' + t.id);
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+    });
+
+    // Sync hover from the chips below the helix: hovering a chip highlights
+    // the matching base, mirroring hovering the rungs directly.
+    const chips = document.querySelectorAll('.dna__chip');
+    chips.forEach(function (chip) {
+      const idx = Number(chip.getAttribute('data-base-index'));
+      chip.addEventListener('mouseenter', function () {
+        hoveredBaseIdx = idx;
+      });
+      chip.addEventListener('mouseleave', function () {
+        hoveredBaseIdx = -1;
+      });
     });
 
     if (reduceMotion) {
