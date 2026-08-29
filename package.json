@@ -4,6 +4,9 @@
   "description": "Personal website of Alan Kay — technology enthusiast and professional geek.",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=26"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

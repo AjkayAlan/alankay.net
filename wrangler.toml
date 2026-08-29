@@ -1,1 +1,12 @@
-compatibility_date = "2028-08-28"
+# Cloudflare Pages configuration (source of truth).
+# Name of the Pages project — alphanumeric + dashes only; adjust to match your
+# project if it differs.
+name = "alankay-net"
+
+# Output directory of the Astro build (`npm run build` → dist/).
+pages_build_output_dir = "./dist"
+
+# Modern Workers runtime. Set to today's date when bumping.
+compatibility_date = "2026-08-28"
+
+compatibility_flags = ["nodejs_compat"]
