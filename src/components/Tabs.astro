@@ -1,0 +1,159 @@
+---
+interface Props {
+  groupId: string;
+  tabs: { id: string; label: string; paragraphs: string[] }[];
+}
+
+const { groupId, tabs } = Astro.props;
+const listId = `tabs-${groupId}`;
+---
+
+<div class="tabs" data-tabs>
+  <ul class="tabs__list" id={listId} role="tablist">
+    {
+      tabs.map((tab, i) => (
+        <li role="presentation">
+          <button
+            class="tabs__tab"
+            type="button"
+            role="tab"
+            id={`${listId}-tab-${i}`}
+            aria-controls={`${listId}-panel-${i}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? '0' : '-1'}
+          >
+            <span>{tab.label}</span>
+            <span class="tabs__tab-marker" aria-hidden="true">+</span>
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+
+  {
+    tabs.map((tab, i) => (
+      <div
+        class={i === 0 ? 'tabs__panel' : 'tabs__panel tabs__panel--hidden'}
+        id={`${listId}-panel-${i}`}
+        role="tabpanel"
+        aria-labelledby={`${listId}-tab-${i}`}
+        tabindex="0"
+      >
+        {tab.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  // Plain JavaScript — AGENTS.md rule 5: inline scripts must not contain
+  // TypeScript annotations. Tabs on wide screens, accordion below 48rem.
+  const mq = window.matchMedia('(min-width: 48rem)');
+  const onModeChange = mq.addEventListener
+    ? function (fn) {
+        mq.addEventListener('change', fn);
+      }
+    : function (fn) {
+        mq.addListener(fn);
+      };
+
+  function initTabs(root) {
+    const list = root.querySelector('.tabs__list');
+    const tabs = Array.from(root.querySelectorAll('.tabs__tab'));
+    const panels = Array.from(root.querySelectorAll('.tabs__panel'));
+    let mode = 'tabs';
+    let activeIndex = 0;
+
+    function applyVisibility() {
+      tabs.forEach(function (tab, i) {
+        const isActive = i === activeIndex;
+        panels[i].classList.toggle('tabs__panel--hidden', !isActive);
+
+        const marker = tab.querySelector('.tabs__tab-marker');
+        if (marker) marker.textContent = isActive ? '−' : '+';
+
+        if (mode === 'accordion') {
+          tab.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+          tab.setAttribute('tabindex', '0');
+        } else {
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          tab.setAttribute('tabindex', isActive ? '0' : '-1');
+        }
+      });
+    }
+
+    function setMode(next) {
+      mode = next;
+      const isAccordion = mode === 'accordion';
+      if (activeIndex === -1 && !isAccordion) activeIndex = 0;
+
+      list.classList.toggle('tabs__list--accordion', isAccordion);
+
+      if (isAccordion) {
+        list.removeAttribute('role');
+      } else {
+        list.setAttribute('role', 'tablist');
+      }
+
+      tabs.forEach(function (tab) {
+        if (isAccordion) {
+          tab.removeAttribute('role');
+          tab.removeAttribute('aria-selected');
+        } else {
+          tab.setAttribute('role', 'tab');
+          tab.removeAttribute('aria-expanded');
+        }
+      });
+
+      panels.forEach(function (panel) {
+        if (isAccordion) {
+          panel.removeAttribute('role');
+        } else {
+          panel.setAttribute('role', 'tabpanel');
+        }
+      });
+
+      applyVisibility();
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () {
+        if (mode === 'accordion') {
+          activeIndex = activeIndex === i ? -1 : i;
+        } else {
+          activeIndex = i;
+        }
+        applyVisibility();
+      });
+    });
+
+    list.addEventListener('keydown', function (event) {
+      if (mode !== 'tabs') return;
+      const i = tabs.indexOf(document.activeElement);
+      if (i === -1) return;
+
+      let next = null;
+      if (event.key === 'ArrowRight') next = (i + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = tabs.length - 1;
+
+      if (next !== null) {
+        event.preventDefault();
+        activeIndex = next;
+        applyVisibility();
+        tabs[next].focus();
+      }
+    });
+
+    setMode(mq.matches ? 'tabs' : 'accordion');
+
+    onModeChange(function (event) {
+      setMode(event.matches ? 'tabs' : 'accordion');
+    });
+  }
+
+  document.querySelectorAll('[data-tabs]').forEach(function (el) {
+    initTabs(el);
+  });
+</script>

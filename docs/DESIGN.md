@@ -13,14 +13,14 @@ typefaces, or layouts.
 ## 1. The concept: "Your genome"
 
 The entire design is an extended metaphor: **DNA has four bases (A·T·G·C), and
-Alan's story has four influences.** Everything visual hangs off that parallel.
+Alan's story has four strands.** Everything visual hangs off that parallel.
 
-| Influence | Base | Color | Hex |
-|-----------|------|-------|-----|
-| Hockey | **H** | ice blue | `#2d9cdb` |
-| Band | **B** | saxophone brass | `#d9a521` |
-| Computers | **C** | phosphor green | `#23a26d` |
-| Parents | **P** | warm clay | `#e0675a` |
+| Strand | Base | Color | Hex |
+|--------|------|-------|-----|
+| Personal | **P** | ice blue | `#2d9cdb` |
+| Professional | **C** | phosphor green | `#23a26d` |
+| Background | **B** | warm clay | `#e0675a` |
+| Values | **V** | brass | `#d9a521` |
 
 These four colors are the **identity sequence**. They never change between
 themes, and they are the *only* place full color is allowed to carry meaning.
@@ -28,10 +28,10 @@ The rest of the page stays deliberately quiet so the sequence reads.
 
 ### Rules of the metaphor
 
-- Every influence maps to one letter, one color, one anchor (`#track-{id}`).
-- The hero helix, the About cards, and the base chips must all use the same
-  letter+color mapping — never diverge.
-- Don't add a fifth influence or reorder them without updating
+- Every strand maps to one letter, one color, one anchor (`#track-{id}`).
+- The hero helix, the About strand cards, and the base chips must all use the
+  same letter+color mapping — never diverge.
+- Don't add a fifth strand or reorder them without updating
   `src/data/influences.ts`, the helix, and the chips together.
 
 ---
@@ -69,7 +69,9 @@ Deep ink navy — near-black blue, **not** pure black and **not** grey.
 ### Rules
 
 - **Always** reference the token, never hardcode a neutral hex in a component.
-- **Never** change `--color-hockey/band/computers/parents` per theme.
+- **Never** change `--color-personal/professional/background/values` per theme.
+  A separate `--accent` token (same blue) drives generic UI accents so the four
+  identity colors stay reserved for their strands.
 - A dark-on-light "band" (e.g. `.resume`) uses `--ink` + `--on-ink`, so it works
   in both themes.
 - Prefer `color-mix(in srgb, …)` for translucent tints of a token.
@@ -103,15 +105,17 @@ Self-hosted via `@fontsource` (Latin subsets only — imported in
 Single page, three sections, one signature element. Order in
 `src/pages/index.astro`:
 
-1. **Nav** — sticky, mono wordmark `alankay.net` + blinking cursor (hockey
-   color, matching the "Professional geek" accent), links About/Resume/Contact,
+1. **Nav** — sticky, mono wordmark `alankay.net` + blinking cursor (`--accent`
+   blue, matching the "Professional geek" accent), links About/Resume/Contact,
    theme toggle (sun/moon), mobile menu button.
 2. **Hero** — two columns:
-   - *Left*: headline ("Technology enthusiast. / Professional geek."), intro
+   - *Left*: headline ("Personal roots. / Professional outcomes."), intro
      line, portrait below.
    - *Right*: the DNA helix column (tall + narrow).
-3. **About** — intro paragraph, then four "channel" cards with letter badges
-   (H/B/C/P), then the "So who am I?" close.
+3. **About** — intro paragraph, then four "strand" cards with letter badges
+   (P/C/B/V). Each strand has an intro line and a tabbed set of sub-pieces
+   (tabs on wide screens, accordion on narrow screens). Then the "So who am I?"
+   close.
 4. **Resume** — dark `--ink` band, PDF embed + download button.
 5. **Contact** — four social links as cards.
 6. **Footer** — copyright line only (no tooling credits).
@@ -130,7 +134,7 @@ Single page, three sections, one signature element. Order in
 `src/components/DnaHelix.astro` renders a **3D double helix on a `<canvas>`,
 animated with `requestAnimationFrame`**.
 
-- **What spins**: the whole helix rotates continuously. Depth-sorting makes the
+- **What spins**: the whole helix rotates P·C·B·Vously. Depth-sorting makes the
   two strands cross in front of/behind each other.
 - **Base pairs**: the rungs cycle through H·B·C·P. Currently **10 rungs** =
   2.5 sequences. Tuning knobs live at the top of the script:
@@ -184,8 +188,9 @@ animated with `requestAnimationFrame`**.
 ## 8. Writing (copy voice)
 
 - Words are design material. Prefer the user's actual voice over cleverness.
-- The About "influences" copy is largely verbatim from the owner — don't
-  rewrite it without permission; you may fix typos.
+- The About/strand copy may be re-authored (owner-authorized) to show how
+  influences drive outcomes. Preserve verbatim origin-story passages the owner
+  wants kept. Tone is personal + professional, polished but human.
 - Keep labels plain and specific; avoid marketing filler.
 
 ---
@@ -195,7 +200,9 @@ animated with `requestAnimationFrame`**.
 | Concern | File |
 |---------|------|
 | Tokens, themes, all styles | `src/styles/global.css` |
-| Influences (letters, colors, copy) | `src/data/influences.ts` |
+| Strands (letters, colors, copy, tabs) | `src/data/influences.ts` |
+| Strand card (one category) | `src/components/StrandSection.astro` |
+| Tabs / accordion widget | `src/components/Tabs.astro` |
 | Social links | `src/data/socials.ts` |
 | Helix | `src/components/DnaHelix.astro` |
 | Theme init | `src/layouts/BaseLayout.astro` |

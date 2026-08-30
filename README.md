@@ -8,8 +8,8 @@ deployed on [Cloudflare Pages](https://pages.cloudflare.com).
 ## Design
 
 The site is built on one metaphor: **DNA has four bases, and Alan's story has
-four influences** — Hockey, Band, Computers, and Parents. Each influence maps to
-a letter (H·B·C·P) and a fixed color. Full color appears only in that DNA
+four strands** — Personal, Professional, Background, and Values. Each strand maps
+to a letter (P·C·B·V) and a fixed color. Full color appears only in that DNA
 context so it stays meaningful. A spinning 3D double helix (canvas) is the
 signature element; a light/dark theme follows the system preference with a
 manual toggle. See [`docs/DESIGN.md`](docs/DESIGN.md) for the full design
@@ -69,7 +69,7 @@ scripts/
   generate-assets.py   # builds the portrait + the favicon set
 src/
   layouts/BaseLayout.astro
-  components/           # Nav, Hero, DnaHelix, About, Resume, Contact
+  components/           # Nav, Hero, DnaHelix, About, StrandSection, Tabs, Resume, Contact
   pages/index.astro
   data/                 # influences.ts, socials.ts
   styles/global.css

@@ -1,0 +1,31 @@
+---
+import Tabs from './Tabs.astro';
+import type { Influence } from '../data/influences';
+
+interface Props {
+  strand: Influence;
+  index: number;
+}
+
+const { strand, index } = Astro.props;
+---
+
+<article
+  class="strand reveal"
+  id={`track-${strand.id}`}
+  style={`--strand-color: ${strand.color}; --reveal-delay: ${index * 80}ms;`}
+>
+  <header class="strand__head">
+    <span class="strand__badge" aria-hidden="true">{strand.letter}</span>
+    <span class="strand__num">{strand.number}</span>
+    <h3 class="strand__name">{strand.label}</h3>
+  </header>
+
+  <p class="strand__intro">{strand.intro}</p>
+
+  <Tabs
+    groupId={strand.id}
+    tabs={strand.tabs}
+    accent={strand.color}
+  />
+</article>
