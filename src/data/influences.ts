@@ -33,7 +33,7 @@ export const influences: Influence[] = [
         label: 'Music',
         paragraphs: [
           "I picked up my first instrument in fourth grade, in the school cafeteria, trying percussion, trumpet, and clarinet. The clarinet stuck, and before long I wanted a second challenge, so I took up the alto saxophone. Through middle and high school I played alto, tenor, and baritone in the top bands at my schools.",
-          "Playing in an ensemble taught me to listen before I act. I learned to hear whether my own part was in tune with everyone else's, a skill that's surprisingly rare and one that carried straight into how I work with people. Listening is how I learn someone's style, then adjust how I communicate to match it.",
+          "Playing in an ensemble taught me to listen before I act. You learn to hear whether your own part is in tune with everyone else's, which is a surprisingly rare skill and one that carried straight into how I work with people. Listening is how I pick up on someone's style, then adjust how I communicate to match it.",
           "Where it shows up: in meetings I listen for what isn't being said as much as what is. A group only sounds good when everyone is actually hearing each other, and the same is true of a team shipping a product.",
         ],
       },
@@ -41,7 +41,7 @@ export const influences: Influence[] = [
         id: 'hockey',
         label: 'Hockey',
         paragraphs: [
-          "Before college, hockey was the sport I always came back to. I'd organize pick-up games with the neighbors, my street against the street behind ours, and I played through the rough patches (a coach whose approach nearly turned me off the sport) and the highlights (a game at the Allstate Arena).",
+          "Before college, hockey was the sport I always came back to. I'd organize pick-up games with the neighbors, my street against the street behind ours, and I stuck with it through the rough patches (a coach whose approach nearly turned me off the sport entirely) and the highlights (a game at the Allstate Arena).",
           "Hockey trained me for quick, reactive thinking. On the ice you're always reading your surroundings, collecting information and deciding where the puck goes next. That loop of observe, decide, act is the same one I run every day: gather the data, understand the situation, then move.",
           "Where it shows up: the calmest person in a crisis is often the one who's been hit on open ice. Hockey gave me a tolerance for fast, imperfect decisions, so I act on what I know and correct as I go.",
         ],
@@ -50,7 +50,7 @@ export const influences: Influence[] = [
         id: 'outdoors',
         label: 'Outdoors',
         paragraphs: [
-          "Camping and getting outside are how I reset. Away from screens and schedules, I'm reminded that a lot of what feels urgent simply isn't, and that the best plans leave room for weather.",
+          "Camping and getting outside are how I reset. Away from screens and schedules, I'm reminded that a lot of what feels urgent simply isn't. The best plans leave room for weather.",
           "Time outdoors taught me to plan for contingencies and still stay flexible when the plan breaks. Pack for the trip you might have, not just the one you expect.",
           "Where it shows up: I bring the same mindset to projects. I prepare thoroughly, then adapt without drama when conditions change. A plan is a starting point, not a promise.",
         ],
@@ -59,7 +59,7 @@ export const influences: Influence[] = [
         id: 'tinkering',
         label: 'Tinkering',
         paragraphs: [
-          "I've always liked taking things apart to see how they work, computers especially, but really anything with parts. The old Dell I inherited became a lab: reformatting, swapping drives, breaking things, and putting them back better.",
+          "I've always liked taking things apart to see how they work, computers especially, but really anything with moving parts. The old Dell I inherited became a lab where I reformatted, swapped drives, broke things, and put them back better.",
           "Tinkering taught me methodical problem solving and gave me permission to break things on purpose. A broken thing is just a problem with a fix I haven't found yet.",
           "Where it shows up: I treat new tools and systems the same way. I take them apart, understand the pieces, and only then trust them in production.",
         ],
@@ -130,7 +130,7 @@ export const influences: Influence[] = [
         id: 'family',
         label: 'Family',
         paragraphs: [
-          "My parents shaped me in two ways I didn't fully appreciate until later. When I struggled with reading, my mom pushed the school until I was placed in an assisted reading program, and I came out of it with strong reading and comprehension skills. My dad made sure I was never stuck in one room: baseball, hockey, karate, sometimes dashing from a game to the ice arena in the car.",
+          "My parents shaped me in two ways I didn't fully appreciate until later. When I struggled with reading, my mom pushed the school until I was placed in an assisted reading program, and I came out of it with strong reading and comprehension skills. My dad, meanwhile, made sure I was never stuck in one room. I played baseball, hockey, and karate, sometimes finishing a game only to dash straight to the ice arena in the car.",
           "The lesson that stuck: someone in your corner who pushes for your best interest changes your trajectory. My parents kept me on a straight path through the rough patches, which is the only reason I got to flourish in college and beyond.",
           "Where it shows up: I try to be that person for others, the one who advocates, shows up, and keeps people on a path toward their best version.",
         ],
@@ -147,8 +147,8 @@ export const influences: Influence[] = [
         id: 'early-tech',
         label: 'Early tech',
         paragraphs: [
-          "It started in the basement with a Gateway running Windows 95. When the family got a new Dell, the old one became mine, and when a virus wrecked it and the IT team at my mom's work had to reformat it, I decided I'd never be in that position again.",
-          "So I learned how to reformat, manage drivers, and remove malware. I fried a hard drive along the way, plugged a power cable into the RAID slot, and learned James Joyce was right that a man's mistakes are his portals of discovery.",
+          "It started in the basement with a Gateway running Windows 95. When the family got a new Dell, the old one became mine. Then a virus wrecked it so badly that the IT team at my mom's work had to reformat it for me, and I decided I'd never be in that position again.",
+          "So I learned how to reformat a computer, manage drivers, and remove malware. I fried a hard drive along the way (I plugged a power cable into the RAID slot by mistake) and learned firsthand that James Joyce was right: a man's mistakes are his portals of discovery.",
           "Where it shows up: that early self-teaching is why I treat every problem as learnable. If I don't know how something works, I go find out.",
         ],
       },
@@ -167,7 +167,7 @@ export const influences: Influence[] = [
         id: 'how-i-think',
         label: 'How I think',
         paragraphs: [
-          "I'm a problem solver and a deep thinker. I like to understand a thing down to its parts before I act on it, the same instinct that had me opening up computers as a kid.",
+          "I'm a problem solver and a deep thinker. I like to understand a thing down to its parts before I act on it. It's the same instinct that had me opening up computers as a kid.",
           "Deep thinking, for me, doesn't mean slow. It means I've usually considered the second- and third-order effects before I commit to a direction.",
         ],
       },
@@ -191,7 +191,7 @@ export const influences: Influence[] = [
         id: 'how-i-show-up',
         label: 'How I show up',
         paragraphs: [
-          "I show up enthusiastic. I genuinely like this work, the building, the teaching, the problem in front of me, and I think that energy is contagious in a good way.",
+          "I show up enthusiastic. I genuinely like this work: the building, the teaching, the problem sitting in front of me. I think that energy is contagious, in a good way.",
           "Enthusiasm without substance is noise, though. Mine comes with a habit of follow-through: if I'm excited about it, I'm also going to finish it.",
         ],
       },
