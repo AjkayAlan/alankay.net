@@ -73,7 +73,7 @@ export const influences: Influence[] = [
     label: 'Professional',
     color: 'var(--color-professional)',
     intro:
-      'This is where the influences turn into outcomes — the work I do, the results I chase, and the habits that get a project from idea to adopted.',
+      'This is where the building blocks turn into outcomes — the work I do, the results I chase, and the habits that get a project from idea to adopted.',
     tabs: [
       {
         id: 'experience',

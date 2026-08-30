@@ -11,7 +11,7 @@ current request, the user wins — but call out the deviation.
 
 `alankay.net` is a single-page personal site built with **Astro** (static
 output), deployed on **Cloudflare Pages**. The design is built on one metaphor:
-**DNA → four strands → four letters (P·C·B·V) with fixed colors.**
+**DNA → four building blocks → four letters (P·C·B·V) with fixed colors.**
 
 - Stack: Astro (no frontend framework), plain CSS, self-hosted fonts, one small
   canvas animation. No client-side framework, no heavy deps.
@@ -22,15 +22,15 @@ output), deployed on **Cloudflare Pages**. The design is built on one metaphor:
 
 1. **Read `docs/DESIGN.md` first.** Every palette, typeface, spacing token, and
    layout decision originates there.
-2. **The four strand colors are sacred.** Personal `#2d9cdb`, Professional
-   `#23a26d`, Background `#e0675a`, Values `#d9a521`. They never change and never
-   differ between light/dark themes.
+2. **The four building-block colors are sacred.** Personal `#2d9cdb`,
+   Professional `#23a26d`, Background `#e0675a`, Values `#d9a521`. They never
+   change and never differ between light/dark themes.
 3. **Never hardcode neutral colors.** Use the CSS custom properties
    (`--bg`, `--text`, `--surface`, `--line`, `--ink`, `--on-ink`, etc.). Both
    themes must stay in sync.
-4. **Letter + color + anchor mapping is a unit.** If you change a strand's
-   letter or color, update `src/data/influences.ts`, `DnaHelix.astro`, the chips,
-   and the strand badges together.
+4. **Letter + color + anchor mapping is a unit.** If you change a building
+   block's letter or color, update `src/data/influences.ts`, `DnaHelix.astro`,
+   the chips, and the building-block badges together.
 5. **The helix script is plain JavaScript.** `define:vars` does not strip
    TypeScript annotations — `type`/`interface` in an inline `<script>` causes a
    runtime `Unexpected identifier` error. Don't reintroduce TS there.

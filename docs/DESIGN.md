@@ -13,10 +13,12 @@ typefaces, or layouts.
 ## 1. The concept: "Your genome"
 
 The entire design is an extended metaphor: **DNA has four bases (A·T·G·C), and
-Alan's story has four strands.** Everything visual hangs off that parallel.
+Alan's story has four building blocks.** Everything visual hangs off that
+parallel. (DNA has many strands, but only four building blocks — the metaphor
+is about the bases, not the strands.)
 
-| Strand | Base | Color | Hex |
-|--------|------|-------|-----|
+| Building block | Base | Color | Hex |
+|----------------|------|-------|-----|
 | Personal | **P** | ice blue | `#2d9cdb` |
 | Professional | **C** | phosphor green | `#23a26d` |
 | Background | **B** | warm clay | `#e0675a` |
@@ -28,11 +30,13 @@ The rest of the page stays deliberately quiet so the sequence reads.
 
 ### Rules of the metaphor
 
-- Every strand maps to one letter, one color, one anchor (`#track-{id}`).
-- The hero helix, the About strand cards, and the base chips must all use the
-  same letter+color mapping — never diverge.
-- Don't add a fifth strand or reorder them without updating
+- Every building block maps to one letter, one color, one anchor (`#track-{id}`).
+- The hero helix, the About building-block cards, and the base chips must all
+  use the same letter+color mapping — never diverge.
+- Don't add a fifth building block or reorder them without updating
   `src/data/influences.ts`, the helix, and the chips together.
+- The copy should not sell the story short: these four are "a few of the things
+  that shape me," not an exhaustive list.
 
 ---
 
@@ -112,10 +116,10 @@ Single page, three sections, one signature element. Order in
    - *Left*: headline ("Personal roots. / Professional outcomes."), intro
      line, portrait below.
    - *Right*: the DNA helix column (tall + narrow).
-3. **About** — intro paragraph, then four "strand" cards with letter badges
-   (P/C/B/V). Each strand has an intro line and a tabbed set of sub-pieces
-   (tabs on wide screens, accordion on narrow screens). Then the "So who am I?"
-   close.
+3. **About** — intro paragraph, then four "building block" cards with letter
+   badges (P/C/B/V). Each building block has an intro line and a tabbed set of
+   sub-pieces (tabs on wide screens, accordion on narrow screens). Then the
+   "So who am I?" close.
 4. **Resume** — dark `--ink` band, PDF embed + download button.
 5. **Contact** — four social links as cards.
 6. **Footer** — copyright line only (no tooling credits).
