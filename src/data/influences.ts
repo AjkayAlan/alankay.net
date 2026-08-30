@@ -26,7 +26,7 @@ export const influences: Influence[] = [
     label: 'Personal',
     color: 'var(--color-personal)',
     intro:
-      "The pursuits I've kept up off the clock aren't just hobbies. Each one trained a skill I still lean on at work.",
+      "The pursuits I've kept up off the clock aren't just hobbies. Each one fostered a skill I still lean on at work.",
     tabs: [
       {
         id: 'music',
