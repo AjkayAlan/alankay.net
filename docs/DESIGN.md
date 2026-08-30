@@ -128,7 +128,7 @@ Single page, three sections, one signature element. Order in
 
 - Section vertical rhythm is two tokens: `--space-section` and `--space-tight`.
   The hero→About gap is intentionally `--space-tight` (a lead-in, not a break).
-- `01 — About`, `02 — Resume`, `03 — Contact` eyebrows encode actual order.
+- `01 · About`, `02 · Resume`, `03 · Contact` eyebrows encode actual order.
 - Numbers/eyebrows should encode something *true*; don't decorate.
 
 ---
