@@ -27,7 +27,7 @@ INK = "#15202B"
 COLORS = ["#2D9CDB", "#23A26D", "#E0675A", "#D9A521"]
 # Helix geometry (in a 64-unit viewBox)
 CX = 32.0
-R = 13.0  # helix radius
+R = 22.0  # helix radius (wider = rungs span further across the tile)
 TOP = 12.0
 BOTTOM = 52.0
 TURNS = 1.0  # one full turn: rungs land at uniform separation, not in the bulges
@@ -87,7 +87,9 @@ def draw_favicon(size: int, out: Path, fmt: str, **save_kwargs) -> None:
         x1 = helix_x(t, 0.0) * scale
         x2 = helix_x(t, math.pi) * scale
         w = max(2, round(3.4 * scale))
-        d.line([x1, y, x2, y], fill=color, width=w)
+        r = w / 2.0
+        # Rounded rectangle: uniform thickness, rounded ends (cylinder).
+        d.rounded_rectangle([min(x1, x2), y - r, max(x1, x2), y + r], radius=r, fill=color)
 
     img.save(out, fmt, **save_kwargs)
     print(f"wrote {out}")
@@ -153,7 +155,8 @@ def draw_frame(size: int) -> Image.Image:
         x1 = helix_x(t, 0.0) * scale
         x2 = helix_x(t, math.pi) * scale
         w = max(2, round(3.4 * scale))
-        d.line([x1, y, x2, y], fill=color, width=w)
+        r = w / 2.0
+        d.rounded_rectangle([min(x1, x2), y - r, max(x1, x2), y + r], radius=r, fill=color)
     return img
 
 
