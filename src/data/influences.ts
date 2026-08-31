@@ -33,7 +33,7 @@ export const influences: Influence[] = [
         label: 'Music',
         paragraphs: [
           "I picked up my first instrument in fourth grade, in the school cafeteria, trying percussion, trumpet, and clarinet. The clarinet stuck, and before long I wanted a second challenge, so I took up the alto saxophone. Through middle and high school I played alto, tenor, and baritone in the top bands at my schools.",
-          "Playing in an ensemble taught me to listen before I act. You learn to hear whether your own part is in tune with everyone else's, which is a surprisingly rare skill and one that carried straight into how I work with people. Listening is how I pick up on someone's style, then adjust how I communicate to match it.",
+          "Playing in an ensemble taught me to listen before I act. I learned to hear whether my own part was in tune with everyone else's, a surprisingly rare skill that carried straight into how I work with people. Listening is how I pick up on someone's style, then adjust how I communicate to match it.",
           "Where it shows up: in meetings I listen for what isn't being said as much as what is. A group only sounds good when everyone is actually hearing each other, and the same is true of a team shipping a product.",
         ],
       },
@@ -43,7 +43,7 @@ export const influences: Influence[] = [
         paragraphs: [
           "Before college, hockey was the sport I always came back to. I'd organize pick-up games with the neighbors, my street against the street behind ours, and I stuck with it through the rough patches (a coach whose approach nearly turned me off the sport entirely) and the highlights (a game at the Allstate Arena).",
           "Hockey trained me for quick, reactive thinking. On the ice you're always reading your surroundings, collecting information and deciding where the puck goes next. That loop of observe, decide, act is the same one I run every day: gather the data, understand the situation, then move.",
-          "Where it shows up: the calmest person in a crisis is often the one who's been hit on open ice. Hockey gave me a tolerance for fast, imperfect decisions, so I act on what I know and correct as I go.",
+          "Where it shows up: the calmest person in a crisis is often the one who's been hit on open ice. Hockey gave me comfort with fast, imperfect decisions: act on what you know, correct as you go.",
         ],
       },
       {
@@ -130,7 +130,7 @@ export const influences: Influence[] = [
         id: 'family',
         label: 'Family',
         paragraphs: [
-          "My parents shaped me in two ways I didn't fully appreciate until later. When I struggled with reading, my mom pushed the school until I was placed in an assisted reading program, and I came out of it with strong reading and comprehension skills. My dad, meanwhile, made sure I was never stuck in one room. I played baseball, hockey, and karate, sometimes finishing a game only to dash straight to the ice arena in the car.",
+          "My parents shaped me in two ways I didn't fully appreciate until later. When I struggled with reading, my mom pushed the school until I was placed in an assisted reading program, and I came out of it with strong reading and comprehension skills. My dad made sure I was never stuck in one room. I played baseball, hockey, and karate, sometimes finishing a game only to dash straight to the ice arena in the car.",
           "The lesson that stuck: someone in your corner who pushes for your best interest changes your trajectory. My parents kept me on a straight path through the rough patches, which is the only reason I got to flourish in college and beyond.",
           "Where it shows up: I try to be that person for others, the one who advocates, shows up, and keeps people on a path toward their best version.",
         ],
@@ -191,7 +191,7 @@ export const influences: Influence[] = [
         id: 'how-i-show-up',
         label: 'How I show up',
         paragraphs: [
-          "I show up enthusiastic. I genuinely like this work: the building, the teaching, the problem sitting in front of me. I think that energy is contagious, in a good way.",
+          "I show up enthusiastic. I genuinely like this work: the building, the teaching, the problem sitting in front of me. I think that energy is contagious, and amplify it.",
           "Enthusiasm without substance is noise, though. Mine comes with a habit of follow-through: if I'm excited about it, I'm also going to finish it.",
         ],
       },

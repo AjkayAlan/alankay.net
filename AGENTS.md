@@ -87,3 +87,13 @@ If the helix "doesn't look like DNA," it's usually one of these, in order:
   `python3 scripts/generate-assets.py` (requires Pillow). Same script builds the
   favicon set.
 - Cloudflare Web Analytics beacon + token: `src/layouts/BaseLayout.astro`.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live as GitHub issues, managed with the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context layout: one `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
