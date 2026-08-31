@@ -89,18 +89,20 @@ Self-hosted via `@fontsource` (Latin subsets only — imported in
 
 | Role | Face | Notes |
 |------|------|-------|
-| Display | **Space Grotesk** (500/700) | Headlines only; used with restraint |
+| Display | **Inter** (600/700) | Headlines and section titles |
 | Body | **Inter** (400/500/600) | All running text |
-| Mono / utility | **IBM Plex Mono** (400/500/600) | Eyebrows, labels, nav, captions, chips — the "geek vernacular" |
+| Mono / utility | **IBM Plex Mono** (400/500/600) | Labels, nav, captions, chips — the "geek vernacular" |
 
 ### Rules
 
+- Two-font system: **Inter** for all content (display + body), **IBM Plex Mono**
+  for the geek/technical accents. No third display face.
 - Mono is the personality carrier: labels, numbers, the wordmark `alankay.net`,
   base letters, and the footer are all mono + `text-transform: uppercase` with
   wide letter-spacing for small labels.
 - Type scale is a named `--text-*` series (1.25 minor third) in the tokens.
 - Keep display type in kebab/lowercase sentence case; reserve all-caps for
-  mono labels, not Space Grotesk.
+  mono labels, not Inter.
 
 ---
 
@@ -113,8 +115,8 @@ Single page, three sections, one signature element. Order in
    blue, matching the "Professional geek" accent), links About/Resume/Contact,
    theme toggle (sun/moon), mobile menu button.
 2. **Hero** — two columns:
-   - *Left*: headline ("Personal roots. / Professional outcomes."), intro
-     line, portrait below.
+   - *Left*: headline ("Personal roots. / Professional outcomes."), portrait
+     below.
    - *Right*: the DNA helix column (tall + narrow).
 3. **About** — intro paragraph, then four "building block" cards with letter
    badges (P/C/B/V). Each building block has an intro line and a tabbed set of
@@ -128,8 +130,9 @@ Single page, three sections, one signature element. Order in
 
 - Section vertical rhythm is two tokens: `--space-section` and `--space-tight`.
   The hero→About gap is intentionally `--space-tight` (a lead-in, not a break).
-- `01 · About`, `02 · Resume`, `03 · Contact` eyebrows encode actual order.
-- Numbers/eyebrows should encode something *true*; don't decorate.
+- Sections are destinations, not a sequence: no numbered eyebrows. The section
+  headings carry the labels; the mono "geek vernacular" lives in the nav,
+  wordmark, helix chips, and letter badges instead.
 
 ---
 
