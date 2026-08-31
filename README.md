@@ -9,7 +9,7 @@ deployed on [Cloudflare Pages](https://pages.cloudflare.com).
 
 The site is built on one metaphor: **DNA has four bases, and Alan's story has
 four building blocks** — Personal, Professional, Background, and Values. Each
-building block maps to a letter (P·C·B·V) and a fixed color. Full color appears
+building block maps to a letter (P·P·B·V) and a fixed color. Full color appears
 only in that DNA context so it stays meaningful. A spinning 3D double helix
 (canvas) is the signature element; a light/dark theme follows the system
 preference with a manual toggle. See [`docs/DESIGN.md`](docs/DESIGN.md) for the

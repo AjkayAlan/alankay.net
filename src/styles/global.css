@@ -536,12 +536,6 @@ button {
   flex-shrink: 0;
 }
 
-.strand__num {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-}
-
 .strand__name {
   font-family: var(--font-mono);
   font-weight: 600;

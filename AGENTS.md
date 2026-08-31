@@ -11,7 +11,7 @@ current request, the user wins — but call out the deviation.
 
 `alankay.net` is a single-page personal site built with **Astro** (static
 output), deployed on **Cloudflare Pages**. The design is built on one metaphor:
-**DNA → four building blocks → four letters (P·C·B·V) with fixed colors.**
+**DNA → four building blocks → four letters (P·P·B·V) with fixed colors.**
 
 - Stack: Astro (no frontend framework), plain CSS, self-hosted fonts, one small
   canvas animation. No client-side framework, no heavy deps.
@@ -77,7 +77,7 @@ If the helix "doesn't look like DNA," it's usually one of these, in order:
 - **Too wide** → lower `R` (radius) in `DnaHelix.astro`.
 - **Too few/too many twists** → adjust `TURNS`.
 - **Too fast/slow** → adjust `SPEED` (rad/ms; 0.0008 ≈ 7.9s/rev).
-- **Too few rungs** → the sequence is `RUNGS` (10 = 2.5× the P·C·B·V repeat).
+- **Too few rungs** → the sequence is `RUNGS` (10 = 2.5× the P·P·B·V repeat).
 
 ## Content & contact
 

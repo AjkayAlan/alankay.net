@@ -20,7 +20,7 @@ is about the bases, not the strands.)
 | Building block | Base | Color | Hex |
 |----------------|------|-------|-----|
 | Personal | **P** | ice blue | `#2d9cdb` |
-| Professional | **C** | phosphor green | `#23a26d` |
+| Professional | **P** | phosphor green | `#23a26d` |
 | Background | **B** | warm clay | `#e0675a` |
 | Values | **V** | brass | `#d9a521` |
 
@@ -141,7 +141,7 @@ Single page, three sections, one signature element. Order in
 `src/components/DnaHelix.astro` renders a **3D double helix on a `<canvas>`,
 animated with `requestAnimationFrame`**.
 
-- **What spins**: the whole helix rotates P·C·B·Vously. Depth-sorting makes the
+- **What spins**: the whole helix rotates P·P·B·Vously. Depth-sorting makes the
   two strands cross in front of/behind each other.
 - **Base pairs**: the rungs cycle through H·B·C·P. Currently **10 rungs** =
   2.5 sequences. Tuning knobs live at the top of the script:

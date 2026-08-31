@@ -6,8 +6,6 @@ export interface InfluenceTab {
 
 export interface Influence {
   id: string;
-  /** Zero-padded strand number shown in the UI (e.g. "01"). */
-  number: string;
   /** Single-letter "base" code used in the DNA sequence (e.g. "P"). */
   letter: string;
   label: string;
@@ -21,7 +19,6 @@ export interface Influence {
 export const influences: Influence[] = [
   {
     id: 'personal',
-    number: '01',
     letter: 'P',
     label: 'Personal',
     color: 'var(--color-personal)',
@@ -68,8 +65,7 @@ export const influences: Influence[] = [
   },
   {
     id: 'professional',
-    number: '02',
-    letter: 'C',
+    letter: 'P',
     label: 'Professional',
     color: 'var(--color-professional)',
     intro:
@@ -119,7 +115,6 @@ export const influences: Influence[] = [
   },
   {
     id: 'background',
-    number: '03',
     letter: 'B',
     label: 'Background',
     color: 'var(--color-background)',
@@ -156,7 +151,6 @@ export const influences: Influence[] = [
   },
   {
     id: 'values',
-    number: '04',
     letter: 'V',
     label: 'Values',
     color: 'var(--color-values)',
