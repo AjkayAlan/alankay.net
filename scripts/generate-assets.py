@@ -3,7 +3,7 @@
 
 Produces:
   public/portrait.jpg         — resized, web-optimized portrait for the hero
-  public/favicon.svg          — scalable "four tracks" favicon
+  public/favicon.svg          — scalable DNA-helix favicon
   public/favicon.ico          — multi-size ICO (16/32/48)
   public/apple-touch-icon.png — 180px Apple touch icon
 
@@ -12,6 +12,7 @@ Requires Pillow:  python3 -m pip install pillow
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -22,8 +23,23 @@ ASSETS = ROOT / "assets"  # source assets (not shipped)
 
 # Design tokens (mirrors src/styles/global.css)
 INK = "#15202B"
-COLORS = ["#2D9CDB", "#D9A521", "#23A26D", "#E0675A"]  # hockey, band, computers, parents
-FRACTIONS = [0.78, 0.62, 0.46, 0.30]  # relative bar heights (echoes hero EQ)
+# Identity sequence: Personal, Professional, Background, Values (P·P·B·V)
+COLORS = ["#2D9CDB", "#23A26D", "#E0675A", "#D9A521"]
+# Helix geometry (in a 64-unit viewBox)
+CX = 32.0
+R = 13.0  # helix radius
+TOP = 12.0
+BOTTOM = 52.0
+TURNS = 1.0  # one full turn: rungs land at uniform separation, not in the bulges
+
+
+def helix_x(t: float, phase: float) -> float:
+    """x position of one strand at normalized height t (0..1)."""
+    return CX + R * math.cos(t * TURNS * 2 * math.pi + phase)
+
+
+def helix_y(t: float) -> float:
+    return TOP + (BOTTOM - TOP) * t
 
 
 def make_portrait() -> None:
@@ -45,7 +61,7 @@ def make_portrait() -> None:
 
 
 def draw_favicon(size: int, out: Path, fmt: str, **save_kwargs) -> None:
-    """Draw the four-bar 'four tracks' mark at the given square size."""
+    """Draw the DNA-helix mark at the given square size."""
     scale = size / 64.0
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
@@ -54,19 +70,24 @@ def draw_favicon(size: int, out: Path, fmt: str, **save_kwargs) -> None:
     radius = round(14 * scale)
     d.rounded_rectangle([0, 0, size - 1, size - 1], radius=radius, fill=INK)
 
-    # Four bars, centered vertically.
-    bar_w = round(7 * scale)
-    gap = round(4 * scale)
-    total_w = 4 * bar_w + 3 * gap
-    left = round((size - total_w) / 2)
-    max_h = round(40 * scale)
+    # Two backbone strands (sampled as polylines).
+    strand_a = []
+    strand_b = []
+    for i in range(33):
+        t = i / 32.0
+        strand_a.append((helix_x(t, 0.0) * scale, helix_y(t) * scale))
+        strand_b.append((helix_x(t, math.pi) * scale, helix_y(t) * scale))
+    d.line(strand_a, fill="#4E5E6E", width=max(1, round(1.2 * scale)), joint="curve")
+    d.line(strand_b, fill="#4E5E6E", width=max(1, round(1.2 * scale)), joint="curve")
 
-    for i, (color, frac) in enumerate(zip(COLORS, FRACTIONS)):
-        h = max(round(max_h * frac), 2)
-        x0 = left + i * (bar_w + gap)
-        y0 = round((size - h) / 2)
-        r = min(bar_w // 2, h // 2)
-        d.rounded_rectangle([x0, y0, x0 + bar_w - 1, y0 + h - 1], radius=r, fill=color)
+    # Four colored rungs (base pairs) at even heights.
+    for i, color in enumerate(COLORS):
+        t = (i + 0.5) / 4.0
+        y = helix_y(t) * scale
+        x1 = helix_x(t, 0.0) * scale
+        x2 = helix_x(t, math.pi) * scale
+        w = max(2, round(3.4 * scale))
+        d.line([x1, y, x2, y], fill=color, width=w)
 
     img.save(out, fmt, **save_kwargs)
     print(f"wrote {out}")
@@ -74,19 +95,24 @@ def draw_favicon(size: int, out: Path, fmt: str, **save_kwargs) -> None:
 
 def make_favicons() -> None:
     # Scalable SVG (preferred by modern browsers).
-    svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">\n'
-    svg += '  <rect width="64" height="64" rx="14" fill="#15202B"/>\n'
-    bar_w, gap, left, max_h = 7, 4, 12, 40
-    for i, (color, frac) in enumerate(zip(COLORS, FRACTIONS)):
-        h = max(round(max_h * frac), 2)
-        x = left + i * (bar_w + gap)
-        y = round((64 - h) / 2)
-        svg += (
-            f'  <rect x="{x}" y="{y}" width="{bar_w}" height="{h}" '
-            f'rx="{min(bar_w, h) // 2}" fill="{color}"/>\n'
+    svg = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">']
+    svg.append('  <rect width="64" height="64" rx="14" fill="#15202B"/>')
+    # Backbones as polylines.
+    for phase in (0.0, math.pi):
+        pts = " ".join(
+            f"{helix_x(i / 32.0, phase):.2f},{helix_y(i / 32.0):.2f}"
+            for i in range(33)
         )
-    svg += "</svg>\n"
-    (PUBLIC / "favicon.svg").write_text(svg, encoding="utf-8")
+        svg.append(f'  <polyline points="{pts}" fill="none" stroke="#4E5E6E" stroke-width="1.2" stroke-linejoin="round"/>')
+    # Rungs.
+    for i, color in enumerate(COLORS):
+        t = (i + 0.5) / 4.0
+        y = helix_y(t)
+        x1 = helix_x(t, 0.0)
+        x2 = helix_x(t, math.pi)
+        svg.append(f'  <line x1="{x1:.2f}" y1="{y:.2f}" x2="{x2:.2f}" y2="{y:.2f}" stroke="{color}" stroke-width="3.4" stroke-linecap="round"/>')
+    svg.append("</svg>\n")
+    (PUBLIC / "favicon.svg").write_text("\n".join(svg), encoding="utf-8")
     print("wrote public/favicon.svg")
 
     # Multi-size ICO. Pillow's ICO saver gates allowed sizes on the *base*
@@ -113,16 +139,21 @@ def draw_frame(size: int) -> Image.Image:
     d = ImageDraw.Draw(img)
     radius = round(14 * scale)
     d.rounded_rectangle([0, 0, size - 1, size - 1], radius=radius, fill=INK)
-    bar_w = round(7 * scale)
-    gap = round(4 * scale)
-    left = round((size - (4 * bar_w + 3 * gap)) / 2)
-    max_h = round(40 * scale)
-    for i, (color, frac) in enumerate(zip(COLORS, FRACTIONS)):
-        h = max(round(max_h * frac), 2)
-        x0 = left + i * (bar_w + gap)
-        y0 = round((size - h) / 2)
-        r = min(bar_w // 2, h // 2)
-        d.rounded_rectangle([x0, y0, x0 + bar_w - 1, y0 + h - 1], radius=r, fill=color)
+    strand_a = []
+    strand_b = []
+    for i in range(33):
+        t = i / 32.0
+        strand_a.append((helix_x(t, 0.0) * scale, helix_y(t) * scale))
+        strand_b.append((helix_x(t, math.pi) * scale, helix_y(t) * scale))
+    d.line(strand_a, fill="#4E5E6E", width=max(1, round(1.2 * scale)), joint="curve")
+    d.line(strand_b, fill="#4E5E6E", width=max(1, round(1.2 * scale)), joint="curve")
+    for i, color in enumerate(COLORS):
+        t = (i + 0.5) / 4.0
+        y = helix_y(t) * scale
+        x1 = helix_x(t, 0.0) * scale
+        x2 = helix_x(t, math.pi) * scale
+        w = max(2, round(3.4 * scale))
+        d.line([x1, y, x2, y], fill=color, width=w)
     return img
 
 
