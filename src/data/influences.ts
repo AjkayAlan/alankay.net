@@ -41,11 +41,11 @@ export const influences: Influence[] = [
           },
           {
             heading: 'What it taught me',
-            body: "Playing in an ensemble taught me to listen before I act. I learned to hear whether my own part was in tune with everyone else's, a surprisingly rare skill that carried straight into how I work with people. Listening is how I pick up on someone's style, then adjust how I communicate to match it.",
+            body: "Playing in an ensemble taught me to listen before I act. I learned to hear whether my own part was in tune with everyone else's, a skill most people never have to practice. That habit carried straight into how I work with people: I pick up on someone's style, then adjust how I communicate to match it.",
           },
           {
             heading: 'Where it shows up',
-            body: "In meetings I listen for what isn't being said as much as what is. A group only sounds good when everyone is actually hearing each other, and the same is true of a team shipping a product.",
+            body: "In meetings I tune in to what isn't being said as much as what is. A group only sounds good when every part is genuinely heard, and the same is true of a team shipping a product.",
           },
         ],
       },
@@ -55,11 +55,11 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: "Before college, hockey was the sport I always came back to. I'd organize pick-up games with the neighbors, my street against the street behind ours, and I stuck with it through the rough patches (a coach whose approach nearly turned me off the sport entirely) and the highlights (a game at the Allstate Arena).",
+            body: "Before college, hockey was the sport I always came back to. I'd organize pick-up games with the neighbors, my street against the street behind ours. I stuck with it through a coach whose approach nearly turned me off the sport entirely, and through the highlights, right up to a game at the Allstate Arena.",
           },
           {
             heading: 'What it taught me',
-            body: "Hockey trained me for quick, reactive thinking. On the ice you're always reading your surroundings, collecting information and deciding where the puck goes next. That loop of observe, decide, act is the same one I run every day: gather the data, understand the situation, then move.",
+            body: "Hockey trained me for quick, reactive thinking. On the ice you're always reading your surroundings, collecting information and deciding where the puck goes next. That loop of gather, understand, act is the same one I run every day.",
           },
           {
             heading: 'Where it shows up',
@@ -77,7 +77,7 @@ export const influences: Influence[] = [
           },
           {
             heading: 'What it taught me',
-            body: 'Time outdoors taught me to plan for contingencies and still stay flexible when the plan breaks. Pack for the trip you might have, not just the one you expect.',
+            body: 'Time outdoors taught me to prepare for contingencies and still stay flexible when they arrive. Pack for the trip you might have, not just the one you expect.',
           },
           {
             heading: 'Where it shows up',
@@ -91,7 +91,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: "I've always liked taking things apart to see how they work, computers especially, but really anything with moving parts. The old Dell I inherited became a lab where I reformatted, swapped drives, broke things, and put them back better.",
+            body: "I've always liked taking things apart to see how they work, computers especially, but really anything with moving parts. The old Dell I inherited became a lab where I broke things, swapped drives, and put them back better.",
           },
           {
             heading: 'What it taught me',
@@ -219,15 +219,15 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: "My parents shaped me in two ways I didn't fully appreciate until later. When I struggled with reading, my mom pushed the school until I was placed in an assisted reading program, and I came out of it with strong reading and comprehension skills. My dad made sure I was never stuck in one room. I played baseball, hockey, and karate, sometimes finishing a game only to dash straight to the ice arena in the car.",
+            body: "My parents shaped me in two ways I didn't fully appreciate until later. When I struggled with reading, my mom pushed the school until I was placed in an assisted reading program, and I came out of it with strong reading and comprehension skills. My dad made sure I was never stuck in one room. I played baseball, hockey, and karate, sometimes finishing a game only to dash straight to the ice arena.",
           },
           {
             heading: 'What it taught me',
-            body: "The lesson that stuck: someone in your corner who pushes for your best interest changes your trajectory. My parents kept me on a straight path through the rough patches, which is the only reason I got to flourish in college and beyond.",
+            body: "The lesson that stuck: someone in your corner who pushes for your best interest changes your trajectory. My parents kept me steady through the hard stretches, which is the only reason I got to flourish in college and beyond.",
           },
           {
             heading: 'Where it shows up',
-            body: 'I try to be that person for others, the one who advocates, shows up, and keeps people on a path toward their best version.',
+            body: 'I try to be that person for others, the one who advocates, follows through, and keeps people on a path toward their best version.',
           },
         ],
       },
@@ -255,7 +255,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: "It started in the basement with a Gateway running Windows 95. When the family got a new Dell, the old one became mine. Then a virus took it down so badly that my mom's IT team had to reformat it for me. That day I made a decision: I would understand these machines well enough to never need that rescue again.",
+            body: "A Gateway running Windows 95 lived in the basement. When the family got a new Dell, the old one became mine. Then a virus took it down so badly that my mom's IT team had to wipe and rebuild it for me. That day I made a decision: I would understand these machines well enough to never need that rescue again.",
           },
           {
             heading: 'What it taught me',
@@ -310,7 +310,7 @@ export const influences: Influence[] = [
           },
           {
             heading: 'What it taught me',
-            body: 'Finishing is a discipline, and I practice it. I love seeing projects through to fruition and driving rollout across the organization.',
+            body: 'Finishing is a discipline, and I practice it. Starting is easy; the work I care about is carrying a program through the friction to the point where people rely on it.',
           },
           {
             heading: 'Where it shows up',
@@ -332,7 +332,7 @@ export const influences: Influence[] = [
           },
           {
             heading: 'What it taught me',
-            body: "I'm collaborative and engaged. The best work I've been part of came from a group that was actually hearing each other, which goes straight back to what music taught me.",
+            body: "I'm collaborative and engaged. The best work I've been part of came from a group that was genuinely in sync, which goes straight back to what music taught me.",
           },
           {
             heading: 'Where it shows up',
@@ -350,7 +350,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: 'I show up enthusiastic. I genuinely like this work: the building, the teaching, the problem sitting in front of me.',
+            body: 'I bring genuine enthusiasm to this work. I like the building, the teaching, and the problem sitting in front of me.',
           },
           {
             heading: 'What it taught me',
