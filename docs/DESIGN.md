@@ -75,7 +75,7 @@ Deep ink navy — near-black blue, **not** pure black and **not** grey.
 - **Always** reference the token, never hardcode a neutral hex in a component.
 - **Never** change `--color-personal/professional/background/values` per theme.
   A separate `--accent` token (same blue) drives generic UI accents so the four
-  identity colors stay reserved for their strands.
+  identity colors stay reserved for their building blocks.
 - A dark-on-light "band" (e.g. `.resume`) uses `--ink` + `--on-ink`, so it works
   in both themes.
 - Prefer `color-mix(in srgb, …)` for translucent tints of a token.
@@ -97,7 +97,7 @@ Self-hosted via `@fontsource` (Latin subsets only — imported in
 
 - Two-font system: **Inter** for all content (display + body), **IBM Plex Mono**
   for the geek/technical accents. No third display face.
-- Mono is the personality carrier: labels, numbers, the wordmark `alankay.net`,
+- Mono is the personality carrier: labels, the wordmark `alankay.net`,
   base letters, and the footer are all mono + `text-transform: uppercase` with
   wide letter-spacing for small labels.
 - Type scale is a named `--text-*` series (1.25 minor third) in the tokens.
@@ -108,7 +108,7 @@ Self-hosted via `@fontsource` (Latin subsets only — imported in
 
 ## 4. Layout & structure
 
-Single page, three sections, one signature element. Order in
+Single page, six sections, one signature element. Order in
 `src/pages/index.astro`:
 
 1. **Nav** — sticky, mono wordmark `alankay.net` + blinking cursor (`--accent`
@@ -119,12 +119,32 @@ Single page, three sections, one signature element. Order in
      below.
    - *Right*: the DNA helix column (tall + narrow).
 3. **About** — intro paragraph, then four "building block" cards with letter
-   badges (P/C/B/V). Each building block has an intro line and a tabbed set of
+   badges (P·P·B·V). Each building block has an intro line and a tabbed set of
    sub-pieces (tabs on wide screens, accordion on narrow screens). Then the
    "So who am I?" close.
 4. **Resume** — dark `--ink` band, PDF embed + download button.
 5. **Contact** — four social links as cards.
 6. **Footer** — copyright line only (no tooling credits).
+
+### The three-beat pattern
+
+Every tab's copy follows the same three beats, rendered as labelled sections
+(mono headings, uppercase, muted) so the structure reads at a glance:
+
+1. **Where it started** — the origin: the memory, the role, the moment.
+2. **What it taught me** — the skill or lesson it produced.
+3. **Where it shows up** — the concrete outcome in how I work today.
+
+The heading carries the framing, so the body text never repeats it (no more
+`"Where it shows up: ..."` prefixes). Don't add a beat or reorder them without
+updating every tab in `src/data/influences.ts`.
+
+A beat's `body` is either a single string (one paragraph) or an array of strings
+rendered as separate paragraphs (`p + p` spacing, no extra heading). Reach for an
+array when a beat tells a multi-step story — the long "Where it shows up" example
+under *Values → How I think* uses one paragraph per beat of its own arc
+(problem → analysis → action → result). Keep it short: three or four paragraphs
+is plenty before a beat should become its own tab.
 
 ### Rules
 
@@ -134,7 +154,7 @@ Single page, three sections, one signature element. Order in
   headings carry the labels; the mono "geek vernacular" lives in the nav,
   wordmark, helix chips, and letter badges instead.
 
----
+---continu
 
 ## 5. The signature: the DNA helix
 
@@ -203,9 +223,14 @@ echoes it at a glance.
 ## 8. Writing (copy voice)
 
 - Words are design material. Prefer the user's actual voice over cleverness.
-- The About/strand copy may be re-authored (owner-authorized) to show how
-  influences drive outcomes. Preserve verbatim origin-story passages the owner
-  wants kept. Tone is personal + professional, polished but human.
+- The About copy may be re-authored (owner-authorized) to show how influences
+  drive outcomes. Preserve verbatim origin-story passages the owner wants kept.
+  Tone is personal + professional, polished but human.
+- No em dashes in user-facing copy (the owner reads them as AI-generated). Use
+  `·` as the separator in eyebrows and labels; use periods or commas in prose.
+- Don't repeat a verb or noun in adjacent sentences; vary the wording.
+- A beat's body may be one string or an array of paragraphs (see the three-beat
+  pattern). Use an array for multi-step stories, not for padding.
 - Keep labels plain and specific; avoid marketing filler.
 
 ---
@@ -215,8 +240,8 @@ echoes it at a glance.
 | Concern | File |
 |---------|------|
 | Tokens, themes, all styles | `src/styles/global.css` |
-| Strands (letters, colors, copy, tabs) | `src/data/influences.ts` |
-| Strand card (one category) | `src/components/StrandSection.astro` |
+| Building blocks (letters, colors, copy, tabs) | `src/data/influences.ts` |
+| Building-block card (one category) | `src/components/StrandSection.astro` |
 | Tabs / accordion widget | `src/components/Tabs.astro` |
 | Social links | `src/data/socials.ts` |
 | Helix | `src/components/DnaHelix.astro` |

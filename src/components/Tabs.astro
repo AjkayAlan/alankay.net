@@ -1,11 +1,16 @@
 ---
 interface Props {
   groupId: string;
-  tabs: { id: string; label: string; paragraphs: string[] }[];
+  tabs: {
+    id: string;
+    label: string;
+    sections: { heading: string; body: string | string[] }[];
+  }[];
 }
 
 const { groupId, tabs } = Astro.props;
 const listId = `tabs-${groupId}`;
+const paragraphs = (body: string | string[]) => (Array.isArray(body) ? body : [body]);
 ---
 
 <div class="tabs" data-tabs>
@@ -39,7 +44,12 @@ const listId = `tabs-${groupId}`;
         aria-labelledby={`${listId}-tab-${i}`}
         tabindex="0"
       >
-        {tab.paragraphs.map((p) => <p>{p}</p>)}
+        {tab.sections.map((section) => (
+          <section class="tabs__section">
+            <h4 class="tabs__section-title">{section.heading}</h4>
+            {paragraphs(section.body).map((p) => <p>{p}</p>)}
+          </section>
+        ))}
       </div>
     ))
   }

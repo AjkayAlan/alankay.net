@@ -589,8 +589,22 @@ button {
   padding: 1rem 1.5rem 1.5rem;
 }
 
-.tabs__panel p + p {
-  margin-top: 1rem;
+.tabs__section + .tabs__section {
+  margin-top: 1.25rem;
+}
+
+.tabs__section-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.tabs__section p + p {
+  margin-top: 0.85rem;
 }
 
 /* Below the tabs breakpoint, the widget becomes an accordion: one disclosure
