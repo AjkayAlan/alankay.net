@@ -119,7 +119,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: 'Eleven years, six roles, one company. I started as an intern in 2012 and grew through application development, lean engineering, cloud platform, developer experience, and now AI and productivity measurement.',
+            body: 'Eleven years at one company, and a steady climb from intern to senior engineer. Along the way I moved through application development, lean engineering, cloud platform, developer experience, and now AI and productivity measurement.',
           },
           {
             heading: 'What it taught me',
