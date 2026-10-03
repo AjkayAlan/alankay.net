@@ -119,15 +119,15 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: '[TODO: summarize roles, companies, and years. Pull from the resume.]',
+            body: 'Eleven years, six roles, one company. I started as an intern in 2012 and grew through application development, lean engineering, cloud platform, developer experience, and now AI and productivity measurement.',
           },
           {
             heading: 'What it taught me',
-            body: "Across roles I've kept one through-line: I take ownership of the outcome, not just the task.",
+            body: 'With every role, I reached for a bigger unit of work. I went from building a system, to building the platform it runs on, to building the tools that make every engineer faster. The through-line is ownership. Every step, I took more of the problem, not just more of the task.',
           },
           {
             heading: 'Where it shows up',
-            body: '[TODO: how those roles shaped the way I work today. Author in a follow-up step.]',
+            body: 'Today I work on the systems that shape how four thousand contributors deliver software. That is a long way from a single application, and it is the same job: find the problem, build the fix, prove it worked.',
           },
         ],
       },
@@ -137,7 +137,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: '[TODO: concrete results. Metrics, launches, programs shipped. Add numbers where possible.]',
+            body: 'The first time I watched a number move because of something I built, I was hooked. From then on I wanted every project to end with a result I could point to, not just a launch I could announce.',
           },
           {
             heading: 'What it taught me',
@@ -145,7 +145,11 @@ export const influences: Influence[] = [
           },
           {
             heading: 'Where it shows up',
-            body: '[TODO: how I use those results to shape the next program. Author in a follow-up step.]',
+            body: [
+              'My strongest results come from empowering my customers. The DX platform returned a conservative $10M+ annual ROI across the organization, giving teams a data-driven way to surface their own wins and pain points.',
+              'The engineer workstation utility I built cut new-engineer setup from multiple days to under an hour. About 5,700 people ran it in a year, recovering roughly 91,000 engineer hours, or $6.8M in productivity.',
+              'Not every win is that large. Modernizing license management saved $150K a year. A time-to-first-commit program cut onboarding time by about 30%. The scale varies; the discipline does not.',
+            ],
           },
         ],
       },
@@ -155,15 +159,15 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: '[TODO: how this approach took shape. Author in a follow-up step.]',
+            body: 'I learned to build for the user during my lean engineering years. Pairing and mobbing put me shoulder to shoulder with the people using what we built, and the lesson stuck: craft is a habit you build in, not a phase you add at the end.',
           },
           {
             heading: 'What it taught me',
-            body: 'I build success metrics alongside the program, not after it. Defining what good looks like up front is the difference between shipping and shipping something that matters.',
+            body: 'The best systems make the right thing the easy thing. When the guardrail is built into the tooling, nobody has to remember it, and quality stops depending on who is paying attention.',
           },
           {
             heading: 'Where it shows up',
-            body: "I'm data-driven, but I don't hide behind spreadsheets. Data tells you where you are; judgment tells you what to do about it. I use both.",
+            body: "I build with infrastructure as code and automation, so the result is repeatable and secure by default. The pre-deploy scanning solution I created is now required in Principal's production pipeline: about 2,700 runs a day across 4,000 repositories, checking 300 rules each time. It catches problems before they reach production.",
           },
         ],
       },
@@ -173,7 +177,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: '[TODO: an early example of driving adoption. Author in a follow-up step.]',
+            body: 'My first real lesson in adoption came with AWS. The platform was ready, but ready is not the same as used. I spent as much time removing barriers and shaping the culture as I did building the foundation.',
           },
           {
             heading: 'What it taught me',
@@ -181,7 +185,7 @@ export const influences: Influence[] = [
           },
           {
             heading: 'Where it shows up',
-            body: 'A shipped feature nobody uses is unfinished work. I treat adoption as part of the build, not a follow-up.',
+            body: "The GitHub Copilot rollout is the fullest version of this. I took it from prototype to a 250-person trial, built the business case for senior leadership, and partnered with legal, security, and risk to clear Principal's first AI tool. Then I delivered the training, demos, and a conference session to more than 3,000 engineers. It now serves about 3,500 weekly users, returning roughly $26M a year. Adoption was the project, not the epilogue.",
           },
         ],
       },
@@ -195,7 +199,7 @@ export const influences: Influence[] = [
           },
           {
             heading: 'What it taught me',
-            body: '[TODO: what mentoring others has taught me about my own work. Author in a follow-up step.]',
+            body: "Mentoring taught me that the fastest way to raise a team's quality is to raise the people in it. I've interviewed engineers through pair programming and coached teams through lean practices. A team gets better one person at a time.",
           },
           {
             heading: 'Where it shows up',
