@@ -1,0 +1,31 @@
+---
+import DnaHelix from './DnaHelix.astro';
+---
+
+<header class="hero" id="top">
+  <div class="wrap hero__grid">
+    <div class="hero__content">
+      <h1 class="hero__title">
+        Personal roots.<br />
+        <span class="accent">Professional outcomes.</span>
+      </h1>
+
+      <figure class="hero__portrait">
+        <img
+          src="/portrait.jpg"
+          alt="Portrait of Alan Kay"
+          width="900"
+          height="1200"
+          fetchpriority="high"
+        />
+        <figcaption>
+          <span class="hero__portrait-name">Alan Kay</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="hero__dna">
+      <DnaHelix />
+    </div>
+  </div>
+</header>

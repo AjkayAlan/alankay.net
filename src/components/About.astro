@@ -1,0 +1,34 @@
+---
+import StrandSection from './StrandSection.astro';
+import { influences } from '../data/influences';
+---
+
+<section class="section" id="about" aria-labelledby="about-heading">
+  <div class="wrap">
+    <h2 class="section-title" id="about-heading">About me</h2>
+
+    <p class="about__lead">
+      The people, pursuits, and principles that shaped me fall into four
+      categories: personal, professional, background, and values. They're the
+      building blocks of my DNA, and together they're the code I run on.
+    </p>
+
+    <div class="strands">
+      {
+        influences.map((strand, i) => (
+          <StrandSection strand={strand} index={i} />
+        ))
+      }
+    </div>
+
+    <div class="about__close reveal">
+      <h2 class="about__close-title">So who am I?</h2>
+      <p class="about__close-sign">
+        I bring a problem solver's mindset, a mentor's patience, and a builder's
+        follow-through. I take projects from idea to adopted, and I measure
+        success by the results.
+        <strong> I am Alan Kay.</strong>
+      </p>
+    </div>
+  </div>
+</section>

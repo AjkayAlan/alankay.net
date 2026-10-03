@@ -1,0 +1,16 @@
+{
+  // markdownlint configuration
+  // https://github.com/DavidAnson/markdownlint-cli2
+
+  "config": {
+    "MD013": false, // line-length — prose wraps arbitrarily
+    "MD024": false, // multiple headings with same content
+    "MD033": false, // inline HTML — occasionally useful in docs
+    "MD041": false, // first-line-in-file — not always a heading
+    "MD060": false // table column style — cosmetic, left to author preference
+  },
+
+  "customRules": [],
+
+  "globs": ["**/*.md", "!node_modules/**", "!dist/**"]
+}

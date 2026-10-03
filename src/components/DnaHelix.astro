@@ -1,0 +1,332 @@
+---
+import { influences } from '../data/influences';
+
+// Data for the client-side helix renderer: the four bases, their letter,
+// section anchor, and the CSS var that holds their color.
+const bases = influences.map((t) => ({
+  letter: t.letter,
+  id: t.id,
+  label: t.label,
+  colorVar: t.color,
+}));
+---
+
+<nav class="dna" aria-label="Building blocks">
+  <div class="dna__canvas-wrap">
+    <canvas
+      class="dna__canvas"
+      width="640"
+      height="340"
+      aria-hidden="true"
+    >Your browser doesn't support canvas.</canvas>
+  </div>
+
+  <ul class="dna__chips">
+    {
+      influences.map((track, i) => (
+        <li>
+          <a
+            class="dna__chip"
+            href={`#track-${track.id}`}
+            data-base-index={i}
+            style={`--base-color: ${track.color};`}
+          >
+            <span class="dna__chip-letter" aria-hidden="true">{track.letter}</span>
+            <span class="dna__chip-label">{track.label}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script define:vars={{ bases }}>
+  const canvas = document.querySelector('.dna__canvas');
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const TURNS = 1.75; // number of full twists over the helix length
+    const RUNGS = 10; // 2.5 base sequences (P·P·B·V repeated 2.5×)
+    const SPEED = 0.0008; // radians per ms (≈7.9s per full revolution)
+
+    let baseColors = [];
+    let backboneColor = '#53616f';
+    let hoveredBaseIdx = -1; // base being hovered (for highlight)
+    let clickTargets = []; // screen-space hit regions, rebuilt each frame
+
+    const clamp = function (n, lo, hi) {
+      return Math.min(hi, Math.max(lo, n));
+    };
+
+    // Resolve theme-dependent colors from CSS custom properties.
+    function resolveColors() {
+      const cs = getComputedStyle(document.documentElement);
+      backboneColor = cs.getPropertyValue('--text-muted').trim();
+      baseColors = bases.map(function (b) {
+        const varName = b.colorVar.replace(/var\((.*)\)/, '$1').trim();
+        return { letter: b.letter, color: cs.getPropertyValue(varName).trim() };
+      });
+    }
+
+    function hexRgb(hex) {
+      const s = hex.replace('#', '');
+      const n = parseInt(s, 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    // Dim a hex color by a 0..1 factor (1 = full brightness).
+    function dim(hex, f) {
+      if (!/^#[0-9a-f]{6}$/i.test(hex)) return hex;
+      const rgb = hexRgb(hex);
+      return 'rgb(' + Math.round(rgb[0] * f) + ', ' + Math.round(rgb[1] * f) + ', ' + Math.round(rgb[2] * f) + ')';
+    }
+
+    function draw(rotation) {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const w = rect.width;
+      const h = rect.height;
+      if (w < 8 || h < 8) return;
+
+      const pw = Math.round(w * dpr);
+      const ph = Math.round(h * dpr);
+      if (canvas.width !== pw) canvas.width = pw;
+      if (canvas.height !== ph) canvas.height = ph;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      clickTargets = [];
+
+      const cx = w / 2;
+      // Radius scales with width (a middle ground between too-narrow and
+      // too-wide) and is capped by height for shorter viewports.
+      const R = Math.min(w * 0.2, h * 0.42);
+      const top = h * 0.14;
+      const bottom = h * 0.86;
+      const nodeR = Math.max(2, Math.min(w, h) * 0.017);
+      const f = h * 1.7; // perspective focal length
+
+      // Continuous helix sampling: project a helix node for both strands at
+      // any t in [0,1] so the backbone can be drawn as a smooth flowing curve.
+      function helixPoint(t) {
+        const y = top + (bottom - top) * t;
+        const phase = t * TURNS * Math.PI * 2;
+        const a1 = phase + rotation;
+        const a2 = a1 + Math.PI;
+        const x1 = cx + R * Math.cos(a1);
+        const z1 = R * Math.sin(a1);
+        const x2 = cx + R * Math.cos(a2);
+        const z2 = R * Math.sin(a2);
+        const p1 = f / (f + z1);
+        const p2 = f / (f + z2);
+        return {
+          y: y,
+          sx1: cx + (x1 - cx) * p1,
+          sx2: cx + (x2 - cx) * p2,
+          z1: z1,
+          z2: z2,
+          p1: p1,
+          p2: p2,
+        };
+      }
+
+      // Rung nodes (the base pairs) at RUNGS positions.
+      const pts = [];
+      for (let i = 0; i < RUNGS; i++) {
+        const P = helixPoint(i / (RUNGS - 1));
+        P.zMid = (P.z1 + P.z2) / 2;
+        pts.push(P);
+      }
+
+      // Build a unified list of drawables (backbone segments + rungs) and
+      // depth-sort far→near so the strands correctly cross in front/behind.
+      const items = [];
+
+      const SUB = 5; // subdivisions between rungs for a rounded, fluid backbone
+      for (let s = 0; s < 2; s++) {
+        for (let i = 0; i < RUNGS - 1; i++) {
+          const A = pts[i];
+          let prev = s === 0 ? A.sx1 : A.sx2;
+          let prevY = A.y;
+          let prevZ = s === 0 ? A.z1 : A.z2;
+          let prevP = s === 0 ? A.p1 : A.p2;
+          for (let k = 1; k <= SUB; k++) {
+            const tt = (i + k / SUB) / (RUNGS - 1);
+            const M = helixPoint(tt);
+            const mx = s === 0 ? M.sx1 : M.sx2;
+            const my = M.y;
+            const mz = s === 0 ? M.z1 : M.z2;
+            const mp = s === 0 ? M.p1 : M.p2;
+            items.push({
+              kind: 'backbone',
+              z: (prevZ + mz) / 2,
+              x1: prev,
+              y1: prevY,
+              x2: mx,
+              y2: my,
+              w: (prevP + mp) / 2,
+            });
+            prev = mx;
+            prevY = my;
+            prevZ = mz;
+            prevP = mp;
+          }
+        }
+      }
+
+      for (let i = 0; i < RUNGS; i++) {
+        const P = pts[i];
+        const baseIdx = i % bases.length;
+        items.push({
+          kind: 'rung',
+          z: P.zMid,
+          p: P,
+          base: baseColors[baseIdx] || baseColors[0],
+          baseIdx: baseIdx,
+          id: bases[baseIdx].id,
+          pw: (P.p1 + P.p2) / 2,
+        });
+      }
+
+      items.sort(function (a, b) {
+        return a.z - b.z;
+      });
+
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      for (const it of items) {
+        if (it.kind === 'backbone') {
+          const depth = clamp(0.5 + it.z / (2 * R), 0, 1);
+          const shade = 0.35 + 0.65 * depth;
+          ctx.strokeStyle = dim(backboneColor, shade);
+          ctx.lineWidth = Math.max(1, 1.4 * it.w);
+          ctx.beginPath();
+          ctx.moveTo(it.x1, it.y1);
+          ctx.lineTo(it.x2, it.y2);
+          ctx.stroke();
+        } else {
+          const depth = clamp(0.5 + it.z / (2 * R), 0, 1);
+          const isHovered = it.baseIdx === hoveredBaseIdx;
+          const shade = isHovered ? 1 : 0.4 + 0.6 * depth;
+          // Rung bar.
+          ctx.strokeStyle = dim(it.base.color, shade);
+          ctx.lineWidth = Math.max(1.5, (isHovered ? 4 : 3) * it.pw);
+          ctx.beginPath();
+          ctx.moveTo(it.p.sx1, it.p.y);
+          ctx.lineTo(it.p.sx2, it.p.y);
+          ctx.stroke();
+          // Node beads (slightly brighter than the bar).
+          const nr = nodeR * it.pw * (isHovered ? 1.4 : 1);
+          ctx.fillStyle = dim(it.base.color, Math.min(1, shade + 0.15));
+          ctx.beginPath();
+          ctx.arc(it.p.sx1, it.p.y, nr, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(it.p.sx2, it.p.y, nr, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Record a clickable hit region for this base.
+          clickTargets.push({
+            id: it.id,
+            baseIdx: it.baseIdx,
+            y: it.p.y,
+            x1: Math.min(it.p.sx1, it.p.sx2),
+            x2: Math.max(it.p.sx1, it.p.sx2),
+          });
+        }
+      }
+    }
+
+    resolveColors();
+
+    // Re-resolve neutral colors when the theme is toggled.
+    if ('MutationObserver' in window) {
+      new MutationObserver(resolveColors).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+    }
+
+    // Make the colored base rungs clickable (hover highlight + navigate).
+    // The canvas is a pointer enhancement; the chips below remain the
+    // keyboard-accessible navigation.
+    function hitTest(evt) {
+      const rect = canvas.getBoundingClientRect();
+      const x = evt.clientX - rect.left;
+      const y = evt.clientY - rect.top;
+      for (let i = clickTargets.length - 1; i >= 0; i--) {
+        const t = clickTargets[i];
+        if (y >= t.y - 14 && y <= t.y + 14 && x >= t.x1 && x <= t.x2) {
+          return t;
+        }
+      }
+      return null;
+    }
+
+    canvas.addEventListener('pointermove', function (evt) {
+      const t = hitTest(evt);
+      const next = t ? t.baseIdx : -1;
+      if (next !== hoveredBaseIdx) {
+        hoveredBaseIdx = next;
+        canvas.style.cursor = t ? 'pointer' : 'default';
+      }
+    });
+
+    canvas.addEventListener('pointerleave', function () {
+      hoveredBaseIdx = -1;
+      canvas.style.cursor = 'default';
+    });
+
+    canvas.addEventListener('click', function (evt) {
+      const t = hitTest(evt);
+      if (t && t.id) {
+        const target = document.getElementById('track-' + t.id);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    // Sync hover from the chips below the helix: hovering a chip highlights
+    // the matching base, mirroring hovering the rungs directly.
+    const chips = document.querySelectorAll('.dna__chip');
+    chips.forEach(function (chip) {
+      const idx = Number(chip.getAttribute('data-base-index'));
+      chip.addEventListener('mouseenter', function () {
+        hoveredBaseIdx = idx;
+      });
+      chip.addEventListener('mouseleave', function () {
+        hoveredBaseIdx = -1;
+      });
+    });
+
+    if (reduceMotion) {
+      draw(-0.6);
+      window.addEventListener('resize', function () {
+        draw(-0.6);
+      });
+    } else {
+      let rotation = 0;
+      let last = null;
+      let visible = true;
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          visible = entries[0].isIntersecting;
+        }).observe(canvas);
+      }
+
+      function loop(now) {
+        if (visible) {
+          if (last === null) last = now;
+          rotation += (now - last) * SPEED;
+          draw(rotation);
+        }
+        last = now;
+        requestAnimationFrame(loop);
+      }
+
+      requestAnimationFrame(loop);
+    }
+  }
+</script>
