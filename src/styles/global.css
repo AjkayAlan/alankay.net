@@ -734,18 +734,6 @@ button {
   background: #fff;
 }
 
-.resume__note {
-  margin-top: 1.25rem;
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: rgb(234 240 245 / 65%);
-}
-
-.resume__note a {
-  color: #fff;
-  text-decoration-color: rgb(255 255 255 / 50%);
-}
-
 /* ---------- Contact ---------- */
 .contact__lead {
   color: var(--text-muted);
