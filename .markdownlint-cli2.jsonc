@@ -12,5 +12,7 @@
 
   "customRules": [],
 
-  "globs": ["**/*.md", "!node_modules/**", "!dist/**"]
+  // `.agents/**` holds vendored third-party skills (see skills-lock.json).
+  // They are hash-locked to upstream, so we don't lint or reformat them.
+  "globs": ["**/*.md", "!node_modules/**", "!dist/**", "!.agents/**"]
 }
