@@ -55,7 +55,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: "Before college, hockey was the sport I always came back to. I'd organize pick-up games with the neighbors, my street against the street behind ours. I stuck with it through a coach whose approach nearly turned me off the sport entirely, and through the highlights, right up to a game at the Allstate Arena.",
+            body: "Before college, hockey was the sport I always came back to. I'd organize pick-up games with the neighbors, my street against the street behind ours. Over the years I played for coaches and alongside teammates of every background and style, and I learned to adapt to each of them.",
           },
           {
             heading: 'What it taught me',
@@ -159,7 +159,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: 'I learned to build for the user during my lean engineering years. Pairing and mobbing put me shoulder to shoulder with the people using what we built, and the lesson stuck: craft is a habit you build in, not a phase you add at the end.',
+            body: 'During my lean engineering years I paired and mobbed with the people who used our software. Working beside them taught me to design for user experience from the start, not save it for a final pass.',
           },
           {
             heading: 'What it taught me',
@@ -223,7 +223,7 @@ export const influences: Influence[] = [
         sections: [
           {
             heading: 'Where it started',
-            body: "My parents shaped me in two ways I didn't fully appreciate until later. When I struggled with reading, my mom pushed the school until I was placed in an assisted reading program, and I came out of it with strong reading and comprehension skills. My dad made sure I was never stuck in one room. I played baseball, hockey, and karate, sometimes finishing a game only to dash straight to the ice arena.",
+            body: "My parents shaped me in two ways I didn't fully appreciate until later. When I struggled with reading in second and third grade, my mom pushed the school until I was placed in an assisted reading program, and I came out of it with strong reading and comprehension skills. My dad made sure I was never stuck in one room. I played baseball, hockey, and karate, sometimes finishing a game only to dash straight to the ice arena.",
           },
           {
             heading: 'What it taught me',
