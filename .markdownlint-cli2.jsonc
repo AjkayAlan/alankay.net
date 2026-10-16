@@ -14,5 +14,7 @@
 
   // `.agents/**` holds vendored third-party skills (see skills-lock.json).
   // They are hash-locked to upstream, so we don't lint or reformat them.
-  "globs": ["**/*.md", "!node_modules/**", "!dist/**", "!.agents/**"]
+  // `.claude/**` is the symlink farm `npx skills` generates into `.agents/**`,
+  // so it resolves to the same vendored files and is excluded for the same reason.
+  "globs": ["**/*.md", "!node_modules/**", "!dist/**", "!.agents/**", "!.claude/**"]
 }

@@ -7,6 +7,6 @@ name = "alankay-net"
 pages_build_output_dir = "./dist"
 
 # Modern Workers runtime. Set to today's date when bumping.
-compatibility_date = "2026-08-28"
+compatibility_date = "2026-10-16"
 
 compatibility_flags = ["nodejs_compat"]
